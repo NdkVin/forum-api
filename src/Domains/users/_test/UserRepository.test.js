@@ -5,6 +5,6 @@ describe('UserRepository', () => {
     const userRepository = new UserRepository();
 
     await expect(userRepository.addUser({})).rejects.toThrowError('USER_REPOSITORY.METHOD_NOT_IMPLEMENTED');
-    await expect(userRepository.verivyAvailableUsername()).rejects.toThrowError('USER_REPOSITORY.METHOD_NOT_IMPLEMENTED');
+    await expect(userRepository.verifyAvailableUsername()).rejects.toThrowError('USER_REPOSITORY.METHOD_NOT_IMPLEMENTED');
   });
 });

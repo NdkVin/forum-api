@@ -4,7 +4,7 @@ describe('RegisteredUser entites', () => {
   it('should return an error if the payload is incomplete', () => {
     const payload = {
       username: 'andika',
-      password: 'andikaandika',
+      fullname: 'andikaandika',
     };
 
     expect(() => new RegisteredUser(payload)).toThrowError('REGISTERED_USER.NOT_CONTAIN_NEEDED_PROPERTY');
@@ -12,8 +12,8 @@ describe('RegisteredUser entites', () => {
 
   it('should return an error if the data in the payload does not match', () => {
     const payload = {
-      username: 'andika',
-      password: 'andikaandika',
+      id: 'andika',
+      username: 'andikaandika',
       fullname: 123,
     };
 
@@ -22,15 +22,15 @@ describe('RegisteredUser entites', () => {
 
   it('should return the payload according to the data entered', () => {
     const payload = {
-      username: 'andika',
-      password: 'andikaandika',
+      id: 'andika',
+      username: 'andikaandika',
       fullname: '123',
     };
 
-    const { username, password, fullname } = new RegisteredUser(payload);
+    const { id, username, fullname } = new RegisteredUser(payload);
 
+    expect(id).toEqual(payload.id);
     expect(username).toEqual(payload.username);
-    expect(password).toEqual(payload.password);
     expect(fullname).toEqual(payload.fullname);
   });
 });
