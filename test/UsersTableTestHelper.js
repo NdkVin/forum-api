@@ -1,8 +1,9 @@
+/* istanbul ignore file */
 const pool = require('../src/Infratructures/database/postgres/pool');
 
 const UsersTableHelper = {
   async addUser({
-    id = 'test-123', username = 'andika', password = 'password', fullname = 'andika andika',
+    id = 'user-123', username = 'andika', password = 'passowrd', fullname = 'andika andika',
   }) {
     const query = {
       text: 'INSERT INTO users VALUES($1, $2, $3, $4)',
@@ -11,16 +12,18 @@ const UsersTableHelper = {
 
     await pool.query(query);
   },
-
-  async findUserById(id) {
+  async findUsersById(id) {
     const query = {
-      text: 'SELECT * FROM users WHERE id = id',
+      text: 'SELECT * FROM users WHERE id = $1',
       values: [id],
     };
 
     const result = await pool.query(query);
-    return result;
+    return result.rows;
+  },
+
+  async cleanTable() {
+    await pool.query('TRUNCATE TABLE users');
   },
 };
-
 module.exports = UsersTableHelper;
