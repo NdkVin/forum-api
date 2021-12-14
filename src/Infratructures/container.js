@@ -1,25 +1,25 @@
 /* istanbul ignore file */
 
 const { createContainer } = require('instances-container');
-
-// external agency
 const { nanoid } = require('nanoid');
 const bcrypt = require('bcrypt');
+const PasswordHash = require('../Applications/security/PasswordHash');
+const UserRepository = require('../Domains/users/UserRepository');
 const pool = require('./database/postgres/pool');
+const UserRepositoryPostgres = require('./repository/UserRepositoryPostgres');
+const BcryptPasswordHash = require('./security/BcryptPasswordHash');
+const AddUserUseCase = require('../Applications/use_case/AddUserUseCase');
+
+// external agency
 
 // service (repository, helper, manager, etc)
-const UserRepositoryPostgres = require('./repository/UserRepositoryPostgres');
-const BcryPasswordhash = require('./security/BcryptPasswordHash');
 
 // use case
-const AddUserUseCase = require('../Applications/use_case/AddUserUseCase');
-const UserRepository = require('../Domains/users/UserRepository');
-const PasswordHash = require('../Applications/security/PasswordHash');
 
 // create container
 const container = createContainer();
 
-// register services and repository
+// register service and repository
 container.register([
   {
     key: UserRepository.name,
@@ -37,7 +37,7 @@ container.register([
   },
   {
     key: PasswordHash.name,
-    Class: BcryPasswordhash,
+    Class: BcryptPasswordHash,
     parameter: {
       dependencies: [
         {
