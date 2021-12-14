@@ -1,28 +1,29 @@
 /* istanbul ignore file */
+
 const { createContainer } = require('instances-container');
 
-// eksternal agency
-const bcrypt = require('bcrypt');
+// external agency
 const { nanoid } = require('nanoid');
+const bcrypt = require('bcrypt');
 const pool = require('./database/postgres/pool');
 
 // service (repository, helper, manager, etc)
 const UserRepositoryPostgres = require('./repository/UserRepositoryPostgres');
-const BcryptPasswordHash = require('./security/BcryptPasswordHash');
+const BcryPasswordhash = require('./security/BcryptPasswordHash');
 
 // use case
+const AddUserUseCase = require('../Applications/use_case/AddUserUseCase');
 const UserRepository = require('../Domains/users/UserRepository');
 const PasswordHash = require('../Applications/security/PasswordHash');
-const AddUserUseCase = require('../Applications/use_case/AddUserUseCase');
 
-// creating container
+// create container
 const container = createContainer();
 
-// egistering service and repository
+// register services and repository
 container.register([
   {
     key: UserRepository.name,
-    class: UserRepositoryPostgres,
+    Class: UserRepositoryPostgres,
     parameter: {
       dependencies: [
         {
@@ -35,8 +36,8 @@ container.register([
     },
   },
   {
-    key: PasswordHash,
-    class: BcryptPasswordHash,
+    key: PasswordHash.name,
+    Class: BcryPasswordhash,
     parameter: {
       dependencies: [
         {
@@ -47,11 +48,11 @@ container.register([
   },
 ]);
 
-// registering use case
+// register use case
 container.register([
   {
     key: AddUserUseCase.name,
-    class: AddUserUseCase,
+    Class: AddUserUseCase,
     parameter: {
       injectType: 'destructuring',
       dependencies: [
@@ -67,3 +68,5 @@ container.register([
     },
   },
 ]);
+
+module.exports = container;
