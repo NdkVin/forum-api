@@ -11,6 +11,10 @@ describe('DomainErrorTranslator', () => {
       .toStrictEqual(new InvariantError('tidak dapat membuat user baru karena karakter username melebihi batas limit'));
     expect(DomainErrorTranslator.translate(new InvariantError('REGISTER_USER.USERNAME_CONTAIN_RESTRICTED_CHARACTER')))
       .toStrictEqual(new InvariantError('tidak dapat membuat user baru karena username mengandung karakter terlarang'));
+    expect(DomainErrorTranslator.translate(new InvariantError('AUTH_USER.NOT_COMPLETE')))
+      .toStrictEqual(new InvariantError('tidak dapat melakukan authentikasi karena properti yang dikirimkan tidak lengkap'));
+    expect(DomainErrorTranslator.translate(new InvariantError('AUTH_USER.NOT_MATCHING_DATA_TYPE')))
+      .toStrictEqual(new InvariantError('tidak dapat melakukan authentikasi karena tipe data pada properti yang dikirimkan tidak sesuai'));
   });
 
   it('should return original error', () => {
