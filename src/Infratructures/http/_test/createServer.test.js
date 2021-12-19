@@ -124,7 +124,7 @@ describe('HTTP server', () => {
       const responseJson = JSON.parse(response.payload);
       expect(response.statusCode).toEqual(400);
       expect(responseJson.status).toEqual('fail');
-      expect(responseJson.message).toEqual('username mengandung karakter terlarang');
+      expect(responseJson.message).toEqual('tidak dapat melakukan registrasi karena username mengandung karakter terlarang');
     });
 
     it('should return an error if username not available', async () => {

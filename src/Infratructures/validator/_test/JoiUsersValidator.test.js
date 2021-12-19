@@ -46,7 +46,7 @@ describe('JoiUsersValidator', () => {
 
     const joiUsersValidator = new JoiUsersValidator(Joi);
 
-    expect(() => joiUsersValidator.validate(payload)).toThrowError('username mengandung karakter terlarang');
+    expect(() => joiUsersValidator.validate(payload)).toThrowError('tidak dapat melakukan registrasi karena username mengandung karakter terlarang');
   });
 
   it('should not throw error', () => {

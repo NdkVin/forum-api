@@ -26,9 +26,11 @@ class JoiUsersValidator extends UsersValidator {
         'any.required': 'fullname harus diisi',
       }),
     });
-
-    if (!payload.username.match(/^[\w]+$/)) {
-      throw new InvariantError('username mengandung karakter terlarang');
+    const { username } = payload;
+    if (typeof username === 'string') {
+      if (username && !username.match(/^[\w]+$/)) {
+        throw new InvariantError('tidak dapat melakukan registrasi karena username mengandung karakter terlarang');
+      }
     }
 
     const validateResult = UsersSchema.validate(payload);
