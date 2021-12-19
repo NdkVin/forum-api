@@ -3,17 +3,19 @@
 // external agency
 const { createContainer } = require('instances-container');
 const { nanoid } = require('nanoid');
+const joi = require('joi');
 const bcrypt = require('bcrypt');
 const pool = require('../database/postgres/pool');
 
 // service
-const UserRepository = require('../../Domains/users/UserRepository');
 const UserRepositoryPostgres = require('../repository/UserRepositoryPostgres');
+const JoiUsersValidator = require('../validator/JoiUsersValidator');
 const BcryptPasswordHash = require('../security/BcryptPasswordHash');
-const PasswordHash = require('../../Applications/security/PasswordHash');
 // use case
 const AddUserUseCase = require('../../Applications/use_case/AddUserUseCase');
-
+const PasswordHash = require('../../Applications/security/PasswordHash');
+const UsersValidator = require('../../Applications/validator/UsersValidator');
+const UserRepository = require('../../Domains/users/UserRepository');
 // container
 const container = createContainer();
 
@@ -44,6 +46,17 @@ container.register([
       ],
     },
   },
+  {
+    key: UsersValidator.name,
+    Class: JoiUsersValidator,
+    parameter: {
+      dependencies: [
+        {
+          concrete: joi,
+        },
+      ],
+    },
+  },
 ]);
 
 // register use case
@@ -61,6 +74,10 @@ container.register([
         {
           name: 'passwordHash',
           internal: PasswordHash.name,
+        },
+        {
+          name: 'usersValidator',
+          internal: UsersValidator.name,
         },
       ],
     },

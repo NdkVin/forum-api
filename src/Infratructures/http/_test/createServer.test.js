@@ -61,7 +61,7 @@ describe('HTTP server', () => {
       const responseJson = JSON.parse(response.payload);
       expect(response.statusCode).toEqual(400);
       expect(responseJson.status).toEqual('fail');
-      expect(responseJson.message).toEqual('tidak dapat membuat user baru karena properti yang dibutuhkan tidak ada');
+      expect(responseJson.message).toEqual('fullname harus diisi');
     });
 
     it('should return an error if the data sent does not match', async () => {
@@ -82,7 +82,7 @@ describe('HTTP server', () => {
       const responseJson = JSON.parse(response.payload);
       expect(response.statusCode).toEqual(400);
       expect(responseJson.status).toEqual('fail');
-      expect(responseJson.message).toEqual('tidak dapat membuat user baru karena tipe data tidak sesuai');
+      expect(responseJson.message).toEqual('password harus berupa string');
     });
 
     it('should return an error if username more than 50 character', async () => {
@@ -103,7 +103,7 @@ describe('HTTP server', () => {
       const responseJson = JSON.parse(response.payload);
       expect(response.statusCode).toEqual(400);
       expect(responseJson.status).toEqual('fail');
-      expect(responseJson.message).toEqual('tidak dapat membuat user baru karena karakter username melebihi batas limit');
+      expect(responseJson.message).toEqual('username berisi maksimal 50 karakter');
     });
 
     it('should return an error if username contain restrict character', async () => {
@@ -124,7 +124,7 @@ describe('HTTP server', () => {
       const responseJson = JSON.parse(response.payload);
       expect(response.statusCode).toEqual(400);
       expect(responseJson.status).toEqual('fail');
-      expect(responseJson.message).toEqual('tidak dapat membuat user baru karena username mengandung karakter terlarang');
+      expect(responseJson.message).toEqual('username mengandung karakter terlarang');
     });
 
     it('should return an error if username not available', async () => {
