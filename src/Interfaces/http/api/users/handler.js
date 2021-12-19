@@ -2,7 +2,8 @@ const AddUserUseCase = require('../../../../Applications/use_case/AddUserUseCase
 
 class UsersHandler {
   constructor(container) {
-    this._container = container;
+    const { usersContainer } = container;
+    this._container = usersContainer;
 
     this.postUserHandler = this.postUserHandler.bind(this);
   }
