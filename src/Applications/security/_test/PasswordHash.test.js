@@ -5,5 +5,6 @@ describe('PasswordHash interface', () => {
     const passwordHash = new PasswordHash();
 
     expect(passwordHash.hash('123')).rejects.toThrowError('PASSWORD_HASH.METHOD_NOT_IMPLEMENTED');
+    expect(passwordHash.compare('123', '123')).rejects.toThrowError('PASSWORD_HASH.METHOD_NOT_IMPLEMENTED');
   });
 });

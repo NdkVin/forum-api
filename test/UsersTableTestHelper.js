@@ -3,7 +3,7 @@ const pool = require('../src/Infratructures/database/postgres/pool');
 
 const UsersTableHelper = {
   async addUser({
-    id = 'user-123', username = 'andika', password = 'passowrd', fullname = 'andika andika',
+    id = 'user-123', username = 'andika', password = 'password', fullname = 'andika andika',
   }) {
     const query = {
       text: 'INSERT INTO users VALUES($1, $2, $3, $4)',

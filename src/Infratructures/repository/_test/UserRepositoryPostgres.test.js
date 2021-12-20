@@ -67,4 +67,24 @@ describe('UserRepositoryPostgres', () => {
       }));
     });
   });
+
+  describe('getIdAndPasswordByUsername', () => {
+    it('should return error when send invalid username', async () => {
+      const username = 'andika';
+
+      const userRepositoryPostgres = new UserRepositoryPostgres(pool, {});
+
+      await expect(() => userRepositoryPostgres.getIdAndPasswordByUsername(username)).rejects.toThrowError('autentikasi yang dikirimkan salah');
+    });
+
+    it('should return id and password correctly', async () => {
+      await UsersTableTestHelper.addUser({ username: 'andika-123' });
+      const userRepositoryPostgres = new UserRepositoryPostgres(pool, {});
+
+      const { id, password } = await userRepositoryPostgres.getIdAndPasswordByUsername('andika-123');
+
+      expect(id).toEqual('user-123');
+      expect(password).toEqual('password');
+    });
+  });
 });

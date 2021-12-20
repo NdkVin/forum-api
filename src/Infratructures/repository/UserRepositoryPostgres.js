@@ -1,6 +1,7 @@
 const UserRepository = require('../../Domains/users/UserRepository');
 const InvariantError = require('../../Commons/exceptions/InvariantError');
 const RegisteredUser = require('../../Domains/users/entities/RegisteredUser');
+const AuthenticationError = require('../../Commons/exceptions/AuthenticationError');
 
 class UserRepositoryPostgres extends UserRepository {
   constructor(pool, idGenerator) {
@@ -33,6 +34,21 @@ class UserRepositoryPostgres extends UserRepository {
     const result = await this._pool.query(query);
 
     return new RegisteredUser({ ...result.rows[0] });
+  }
+
+  async getIdAndPasswordByUsername(username) {
+    const query = {
+      text: 'SELECT id, password FROM users WHERE username = $1',
+      values: [username],
+    };
+
+    const result = await this._pool.query(query);
+
+    if (!result.rowCount) {
+      throw new AuthenticationError('autentikasi yang dikirimkan salah');
+    }
+
+    return result.rows[0];
   }
 }
 
