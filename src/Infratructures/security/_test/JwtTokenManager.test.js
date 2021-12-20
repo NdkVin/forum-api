@@ -55,8 +55,10 @@ describe('JwtTokenManager', () => {
       const jwtTokenManager = new JwtTokenManager(Jwt);
       const refreshToken = jwtTokenManager.generateRefreshToken(payload);
 
-      expect(() => jwtTokenManager.verifyRefreshToken(refreshToken))
-        .toStrictEqual(payload);
+      const { username, id } = jwtTokenManager.verifyRefreshToken(refreshToken);
+
+      expect(username).toEqual(payload.username);
+      expect(id).toEqual(payload.id);
     });
   });
 });
