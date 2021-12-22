@@ -8,7 +8,7 @@ class JoiUsersValidator extends UsersValidator {
   }
 
   validate(payload) {
-    const UsersSchema = this._joi.object({
+    const LoginSchema = this._joi.object({
       username: this._joi.string().max(50).required().messages({
         'string.base': 'username harus berupa string',
         'string.empty': 'username tidak boleh kosong',
@@ -33,7 +33,7 @@ class JoiUsersValidator extends UsersValidator {
       }
     }
 
-    const validateResult = UsersSchema.validate(payload);
+    const validateResult = LoginSchema.validate(payload);
 
     if (validateResult.error) {
       throw new InvariantError(validateResult.error.message);
