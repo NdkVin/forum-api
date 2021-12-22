@@ -30,9 +30,9 @@ describe('HTTP server', () => {
         fullname: 'andika andika',
       };
 
-      const server = createServer(container);
+      const server = await createServer(container);
 
-      const response = await (await server).inject({
+      const response = await server.inject({
         method: 'POST',
         url: '/users',
         payload: requestPayload,

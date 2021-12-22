@@ -74,7 +74,7 @@ describe('UserRepositoryPostgres', () => {
 
       const userRepositoryPostgres = new UserRepositoryPostgres(pool, {});
 
-      await expect(() => userRepositoryPostgres.getIdAndPasswordByUsername(username)).rejects.toThrowError('autentikasi yang dikirimkan salah');
+      await expect(() => userRepositoryPostgres.getIdAndPasswordByUsername(username)).rejects.toThrowError('username tidak ditemukan');
     });
 
     it('should return id and password correctly', async () => {
