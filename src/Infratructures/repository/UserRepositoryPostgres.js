@@ -1,7 +1,6 @@
 const UserRepository = require('../../Domains/users/UserRepository');
 const InvariantError = require('../../Commons/exceptions/InvariantError');
 const RegisteredUser = require('../../Domains/users/entities/RegisteredUser');
-const AuthenticationError = require('../../Commons/exceptions/AuthenticationError');
 
 class UserRepositoryPostgres extends UserRepository {
   constructor(pool, idGenerator) {
@@ -45,7 +44,7 @@ class UserRepositoryPostgres extends UserRepository {
     const result = await this._pool.query(query);
 
     if (!result.rowCount) {
-      throw new AuthenticationError('autentikasi yang dikirimkan salah');
+      throw new InvariantError('username tidak ditemukan');
     }
 
     return result.rows[0];

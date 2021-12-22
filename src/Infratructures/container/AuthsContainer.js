@@ -1,26 +1,32 @@
 /* istanbul ignore file */
 
-// external agency
 const { createContainer } = require('instances-container');
+
+// external agency
 const { nanoid } = require('nanoid');
-const joi = require('joi');
 const bcrypt = require('bcrypt');
+const Joi = require('joi');
+const Jwt = require('@hapi/jwt');
 const pool = require('../database/postgres/pool');
 
 // service
-const UserRepositoryPostgres = require('../repository/UserRepositoryPostgres');
-const JoiUsersValidator = require('../validator/JoiUsersValidator');
-const BcryptPasswordHash = require('../security/BcryptPasswordHash');
 const UserRepository = require('../../Domains/users/UserRepository');
+const AuthsRepository = require('../../Domains/auths/AuthsRepository');
+const UserRepositoryPostgres = require('../repository/UserRepositoryPostgres');
+const AuthsRepositoryPostgres = require('../repository/AuthsRepositoryPostgres');
+const BcryptPasswordHash = require('../security/BcryptPasswordHash');
 // use case
-const AddUserUseCase = require('../../Applications/use_case/AddUserUseCase');
+const LoginValidator = require('../../Applications/validator/LoginValidator');
+const JoiLoginValidator = require('../validator/JoiLoginValidator');
 const PasswordHash = require('../../Applications/security/PasswordHash');
-const UsersValidator = require('../../Applications/validator/UsersValidator');
-
+const TokenManager = require('../../Applications/security/TokenManager');
+const JwtTokenManager = require('../security/JwtTokenManager');
+const LoginUseCase = require('../../Applications/use_case/LoginUseCase');
 // container
 const container = createContainer();
 
 // register service and repository
+
 container.register([
   {
     key: UserRepository.name,
@@ -48,12 +54,34 @@ container.register([
     },
   },
   {
-    key: UsersValidator.name,
-    Class: JoiUsersValidator,
+    key: LoginValidator.name,
+    Class: JoiLoginValidator,
     parameter: {
       dependencies: [
         {
-          concrete: joi,
+          concrete: Joi,
+        },
+      ],
+    },
+  },
+  {
+    key: AuthsRepository.name,
+    Class: AuthsRepositoryPostgres,
+    parameter: {
+      dependencies: [
+        {
+          concrete: pool,
+        },
+      ],
+    },
+  },
+  {
+    key: TokenManager.name,
+    Class: JwtTokenManager,
+    parameter: {
+      dependencies: [
+        {
+          concrete: Jwt,
         },
       ],
     },
@@ -63,11 +91,15 @@ container.register([
 // register use case
 container.register([
   {
-    key: AddUserUseCase.name,
-    Class: AddUserUseCase,
+    key: LoginUseCase.name,
+    Class: LoginUseCase,
     parameter: {
       injectType: 'destructuring',
       dependencies: [
+        {
+          name: 'validator',
+          internal: LoginValidator.name,
+        },
         {
           name: 'userRepository',
           internal: UserRepository.name,
@@ -77,8 +109,12 @@ container.register([
           internal: PasswordHash.name,
         },
         {
-          name: 'usersValidator',
-          internal: UsersValidator.name,
+          name: 'tokenManager',
+          internal: TokenManager.name,
+        },
+        {
+          name: 'authsRepository',
+          internal: AuthsRepository.name,
         },
       ],
     },

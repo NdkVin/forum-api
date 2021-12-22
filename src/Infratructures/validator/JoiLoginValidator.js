@@ -1,7 +1,7 @@
-const UsersValidator = require('../../Applications/validator/UsersValidator');
+const LoginValidator = require('../../Applications/validator/LoginValidator');
 const InvariantError = require('../../Commons/exceptions/InvariantError');
 
-class JoiUsersValidator extends UsersValidator {
+class JoiLoginValidator extends LoginValidator {
   constructor(joi) {
     super();
     this._joi = joi;
@@ -20,16 +20,11 @@ class JoiUsersValidator extends UsersValidator {
         'string.empty': 'password tidak boleh kosong',
         'any.required': 'password harus diisi',
       }),
-      fullname: this._joi.string().required().messages({
-        'string.base': 'fullname harus berupa string',
-        'string.empty': 'fullname tidak boleh kosong',
-        'any.required': 'fullname harus diisi',
-      }),
     });
     const { username } = payload;
     if (typeof username === 'string') {
       if (username && !username.match(/^[\w]+$/)) {
-        throw new InvariantError('tidak dapat membuat user baru karena username mengandung karakter terlarang');
+        throw new InvariantError('tidak dapat melakukan login karena username mengandung karakter terlarang');
       }
     }
 
@@ -41,4 +36,4 @@ class JoiUsersValidator extends UsersValidator {
   }
 }
 
-module.exports = JoiUsersValidator;
+module.exports = JoiLoginValidator;
