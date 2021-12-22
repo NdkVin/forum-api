@@ -8,6 +8,10 @@ class AuthRepository {
     throw new Error('AUTH_REPOSITORY.METHOD_NOT_IMPLEMENT');
   }
 
+  async checkDelete(token) {
+    throw new Error('AUTH_REPOSITORY.METHOD_NOT_IMPLEMENT');
+  }
+
   async deleteToken(token) {
     throw new Error('AUTH_REPOSITORY.METHOD_NOT_IMPLEMENT');
   }

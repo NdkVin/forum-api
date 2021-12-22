@@ -9,7 +9,7 @@ class LogoutUseCase {
 
   async execute(payload) {
     this._validator.validate(payload);
-    await this._authsRepository.checkRefreshToken(payload.refreshToken);
+    await this._authsRepository.checkDelete(payload.refreshToken);
     await this._authsRepository.deleteToken(payload.refreshToken);
   }
 }

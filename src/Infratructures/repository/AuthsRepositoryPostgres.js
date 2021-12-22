@@ -29,6 +29,19 @@ class AuthsRepositoryPostgres extends AuthsRepository {
     }
   }
 
+  async checkDelete(token) {
+    const query = {
+      text: 'SELECT * from authentications where token = $1',
+      values: [token],
+    };
+
+    const result = await this._pool.query(query);
+
+    if (!result.rowCount) {
+      throw new InvariantError('refresh token tidak ditemukan di database');
+    }
+  }
+
   async deleteToken(token) {
     const query = {
       text: 'DELETE from authentications where token = $1',

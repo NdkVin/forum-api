@@ -1,5 +1,6 @@
 const LoginUseCase = require('../../../../Applications/use_case/LoginUseCase');
 const RefreshAccessTokenUseCase = require('../../../../Applications/use_case/RefreshAccessTokenUseCase');
+const LogoutUseCase = require('../../../../Applications/use_case/LogoutUseCase');
 
 class AuthsHandler {
   constructor(container) {
@@ -9,6 +10,7 @@ class AuthsHandler {
 
     this.postAuthsHandler = this.postAuthsHandler.bind(this);
     this.putAuthsHandler = this.putAuthsHandler.bind(this);
+    this.deleteAuthsHandler = this.deleteAuthsHandler.bind(this);
   }
 
   async postAuthsHandler({ payload }, h) {
@@ -37,6 +39,17 @@ class AuthsHandler {
       data: {
         accessToken,
       },
+    };
+  }
+
+  async deleteAuthsHandler({ payload }) {
+    const logoutUseCase = this._container.getInstance(LogoutUseCase.name);
+
+    await logoutUseCase.execute(payload);
+
+    return {
+      status: 'success',
+      message: 'berhasil logout',
     };
   }
 }

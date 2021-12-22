@@ -6,6 +6,7 @@ describe('AutehnticationRepository', () => {
 
     expect(authsRepository.addToken('asd')).rejects.toThrowError('AUTH_REPOSITORY.METHOD_NOT_IMPLEMENT');
     expect(authsRepository.checkRefreshToken('asd')).rejects.toThrowError('AUTH_REPOSITORY.METHOD_NOT_IMPLEMENT');
+    expect(authsRepository.checkDelete('asd')).rejects.toThrowError('AUTH_REPOSITORY.METHOD_NOT_IMPLEMENT');
     expect(authsRepository.deleteToken('asd')).rejects.toThrowError('AUTH_REPOSITORY.METHOD_NOT_IMPLEMENT');
   });
 });

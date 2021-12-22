@@ -13,7 +13,7 @@ describe('LogoutUseCase', () => {
 
     mockRefreshAccessTokenValidator.validate = jest.fn()
       .mockImplementation(() => Promise.resolve);
-    mockAuthsRepository.checkRefreshToken = jest.fn()
+    mockAuthsRepository.checkDelete = jest.fn()
       .mockImplementation(() => Promise.resolve);
     mockAuthsRepository.deleteToken = jest.fn()
       .mockImplementation(() => Promise.resolve);
@@ -26,7 +26,7 @@ describe('LogoutUseCase', () => {
     await logoutUseCase.execute(LogoutPayload);
 
     expect(mockRefreshAccessTokenValidator.validate).toBeCalledWith(LogoutPayload);
-    expect(mockAuthsRepository.checkRefreshToken).toBeCalledWith(LogoutPayload.refreshToken);
+    expect(mockAuthsRepository.checkDelete).toBeCalledWith(LogoutPayload.refreshToken);
     expect(mockAuthsRepository.deleteToken).toBeCalledWith(LogoutPayload.refreshToken);
   });
 });

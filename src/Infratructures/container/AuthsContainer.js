@@ -25,6 +25,7 @@ const TokenManager = require('../../Applications/security/TokenManager');
 const JwtTokenManager = require('../security/JwtTokenManager');
 const LoginUseCase = require('../../Applications/use_case/LoginUseCase');
 const RefreshAccessTokenUseCase = require('../../Applications/use_case/RefreshAccessTokenUseCase');
+const LogoutUseCase = require('../../Applications/use_case/LogoutUseCase');
 // container
 const container = createContainer();
 
@@ -147,6 +148,23 @@ container.register([
         {
           name: 'tokenManager',
           internal: TokenManager.name,
+        },
+        {
+          name: 'authsRepository',
+          internal: AuthsRepository.name,
+        },
+      ],
+    },
+  },
+  {
+    key: LogoutUseCase.name,
+    Class: LogoutUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'validator',
+          internal: RefreshAccessTokenValidator.name,
         },
         {
           name: 'authsRepository',
