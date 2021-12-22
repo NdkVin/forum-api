@@ -4,7 +4,7 @@ const TokenManager = require('../../security/TokenManager');
 const RefreshAccessTokenUseCase = require('../RefreshAccessTokenUseCase');
 
 describe('RefreshAccessTokenUseCase', () => {
-  it('should orchesting the login action correctly', async () => {
+  it('should orchesting the refresh access token action correctly', async () => {
     const payload = {
       refreshToken: 'refreshToken',
     };
