@@ -22,7 +22,6 @@ class JwtTokenManager extends TokenManager {
       const { payload } = artifacts.decoded;
       return payload;
     } catch (e) {
-      console.log(e);
       throw new InvariantError('Refresh token tidak valid');
     }
   }
