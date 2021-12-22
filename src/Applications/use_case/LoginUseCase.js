@@ -28,7 +28,7 @@ class LoginUseCase {
       refreshToken,
     });
 
-    this._authsRepository.addToken(auths);
+    this._authsRepository.addToken(refreshToken);
 
     return auths;
   }

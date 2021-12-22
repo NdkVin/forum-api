@@ -14,6 +14,10 @@ describe('RefreshAccessTokenUseCase', () => {
       id: 'user-123',
     };
 
+    const expectAccessToken = {
+      accessToken: 'accessToken',
+    };
+
     const mockRefreshAccessTokenValidator = new RefreshAccessTokenValidator();
     const mockTokenManager = new TokenManager();
     const mockAuthsRepository = new AuthsRepository();
@@ -24,15 +28,21 @@ describe('RefreshAccessTokenUseCase', () => {
       .mockImplementation(() => Promise.resolve);
     mockTokenManager.verifyRefreshToken = jest.fn()
       .mockImplementation(() => expectTokenManager);
+    mockTokenManager.generateAccessToken = jest.fn()
+      .mockImplementation(() => expectAccessToken);
 
     const refreshAccessTokenUseCase = new RefreshAccessTokenUseCase({
       validator: mockRefreshAccessTokenValidator,
       tokenManager: mockTokenManager,
+      authsRepository: mockAuthsRepository,
     });
 
-    refreshAccessTokenUseCase.execute(payload);
+    const result = await refreshAccessTokenUseCase.execute(payload);
 
     expect(mockRefreshAccessTokenValidator.validate).toBeCalledWith(payload);
-    expect(mockTokenManager.verifyRefreshToken).toBeCalledWith(payload);
+    expect(mockAuthsRepository.checkRefreshToken).toBeCalledWith(payload.refreshToken);
+    expect(mockTokenManager.verifyRefreshToken).toBeCalledWith(payload.refreshToken);
+    expect(mockTokenManager.generateAccessToken).toBeCalledWith(expectTokenManager);
+    expect(result).toStrictEqual(expectAccessToken);
   });
 });

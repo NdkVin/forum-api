@@ -15,13 +15,14 @@ class JwtTokenManager extends TokenManager {
     return this._jwt.token.generate(payload, process.env.REFRESH_TOKEN_KEY);
   }
 
-  verifyRefreshToken(token) {
+  verifyRefreshToken(refreshToken) {
     try {
-      const artifacts = this._jwt.token.decode(token);
+      const artifacts = this._jwt.token.decode(refreshToken);
       this._jwt.token.verifySignature(artifacts, process.env.REFRESH_TOKEN_KEY);
       const { payload } = artifacts.decoded;
       return payload;
     } catch (e) {
+      console.log(e);
       throw new InvariantError('Refresh token tidak valid');
     }
   }

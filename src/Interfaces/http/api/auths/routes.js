@@ -4,6 +4,11 @@ const routes = (handler) => [
     path: '/authentications',
     handler: handler.postAuthsHandler,
   },
+  {
+    method: 'PUT',
+    path: '/authentications',
+    handler: handler.putAuthsHandler,
+  },
 ];
 
 module.exports = routes;

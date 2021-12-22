@@ -18,10 +18,13 @@ const BcryptPasswordHash = require('../security/BcryptPasswordHash');
 // use case
 const LoginValidator = require('../../Applications/validator/LoginValidator');
 const JoiLoginValidator = require('../validator/JoiLoginValidator');
+const RefreshAccessTokenValidator = require('../../Applications/validator/RefreshAccessTokenValidator');
+const JoiRefreshAccessTokenValidator = require('../validator/JoiRefreshAccessTokenValidator');
 const PasswordHash = require('../../Applications/security/PasswordHash');
 const TokenManager = require('../../Applications/security/TokenManager');
 const JwtTokenManager = require('../security/JwtTokenManager');
 const LoginUseCase = require('../../Applications/use_case/LoginUseCase');
+const RefreshAccessTokenUseCase = require('../../Applications/use_case/RefreshAccessTokenUseCase');
 // container
 const container = createContainer();
 
@@ -86,6 +89,17 @@ container.register([
       ],
     },
   },
+  {
+    key: RefreshAccessTokenValidator.name,
+    Class: JoiRefreshAccessTokenValidator,
+    parameter: {
+      dependencies: [
+        {
+          concrete: Joi,
+        },
+      ],
+    },
+  },
 ]);
 
 // register use case
@@ -107,6 +121,28 @@ container.register([
         {
           name: 'passwordHash',
           internal: PasswordHash.name,
+        },
+        {
+          name: 'tokenManager',
+          internal: TokenManager.name,
+        },
+        {
+          name: 'authsRepository',
+          internal: AuthsRepository.name,
+        },
+      ],
+    },
+  },
+  //     validator,tokenManager,authsRepository,
+  {
+    key: RefreshAccessTokenUseCase.name,
+    Class: RefreshAccessTokenUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'validator',
+          internal: RefreshAccessTokenValidator.name,
         },
         {
           name: 'tokenManager',

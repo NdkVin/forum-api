@@ -60,6 +60,6 @@ describe('LoginUseCase', () => {
       .toHaveBeenCalledWith({ username: payload.username, id: expectedUserRepository.id });
     expect(mockTokenManager.generateRefreshToken)
       .toHaveBeenCalledWith({ username: payload.username, id: expectedUserRepository.id });
-    expect(mockAuthsRepository.addToken).toBeCalledWith(loggedinRes);
+    expect(mockAuthsRepository.addToken).toBeCalledWith(loggedinRes.refreshToken);
   });
 });
