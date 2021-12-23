@@ -23,7 +23,7 @@ const UsersTableHelper = {
   },
 
   async cleanTable() {
-    await pool.query('TRUNCATE TABLE users');
+    await pool.query('TRUNCATE TABLE users CASCADE');
   },
 };
 module.exports = UsersTableHelper;
