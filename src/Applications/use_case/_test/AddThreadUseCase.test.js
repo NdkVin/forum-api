@@ -2,6 +2,7 @@ const AddThreadValidator = require('../../validator/AddThreadValidator');
 const AddThread = require('../../../Domains/threads/entities/AddThread');
 const ThreadRepository = require('../../../Domains/threads/ThreadRepository');
 const AddThreadUseCase = require('../AddThreadUseCase');
+const AddedThread = require('../../../Domains/threads/entities/AddedThread');
 
 describe('AddThreadUseCase', () => {
   it('should orchesting the add user action correctly', async () => {
@@ -12,11 +13,11 @@ describe('AddThreadUseCase', () => {
 
     const addThread = new AddThread(addThreadPayload);
 
-    const expectedReturn = {
+    const expectedReturn = new AddedThread({
       id: 'thread-123',
       title: 'andika',
       owner: 'andika',
-    };
+    });
     const mockThreadValidator = new AddThreadValidator();
     const mockThreadRepository = new ThreadRepository();
 
