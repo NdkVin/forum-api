@@ -18,4 +18,18 @@ describe('AddedThread', () => {
 
     expect(() => new AddedThread(payload)).toThrowError('ADDED_THREAD.NOT_MEET_DATA_TYPE_SPEC');
   });
+
+  it('should return payload correctly', () => {
+    const payload = {
+      id: 'thread-123',
+      title: '123',
+      owner: 'owner',
+    };
+
+    const addedThread = new AddedThread(payload);
+
+    expect(addedThread.id).toStrictEqual(payload.id);
+    expect(addedThread.title).toStrictEqual(payload.title);
+    expect(addedThread.owner).toStrictEqual(payload.owner);
+  });
 });
