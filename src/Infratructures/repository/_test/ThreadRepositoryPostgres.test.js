@@ -23,13 +23,19 @@ describe('ThreadRepositoryPostgres', () => {
       const owner = 'user-123';
       const fakeIdGenerator = () => '123';
 
+      const expectedReturningValues = {
+        id: 'thread-123',
+        title: payload.title,
+        owner,
+      };
       const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, fakeIdGenerator);
 
-      await threadRepositoryPostgres.addThread(payload, owner);
+      const returningValues = await threadRepositoryPostgres.addThread(payload, owner);
 
-      const result = ThreadsTableHelpers.getThreadById('thread-123');
+      const result = await ThreadsTableHelpers.getThreadById('thread-123');
 
-      console.log(result);
+      expect(result).toHaveLength(1);
+      expect(returningValues).toStrictEqual(expectedReturningValues);
     });
   });
 });

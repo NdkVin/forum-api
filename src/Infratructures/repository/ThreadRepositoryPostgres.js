@@ -23,7 +23,7 @@ class ThreadRepositoryPostgres extends ThreadRepository {
       throw new InvariantError('tidak dapat menambahkan thread');
     }
 
-    return result;
+    return result.rows[0];
   }
 }
 
