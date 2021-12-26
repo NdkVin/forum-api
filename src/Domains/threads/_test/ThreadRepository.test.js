@@ -7,4 +7,3 @@ describe('ThreadRepsitory', () => {
     await expect(threadRepository.addThread).rejects.toThrowError('THREAD_REPOSITORY_METHOD.NOT_IMPLEMENTED');
   });
 });
-
