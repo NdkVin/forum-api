@@ -10,7 +10,11 @@ describe('DomainErrorTranslator', () => {
     expect(DomainErrorTranslator.translate(new InvariantError('ADDED_THREAD.NOT_CONTAIN_NEEDED_PROPERTY')))
       .toStrictEqual(new InvariantError('tidak dapat membuat thread baru karena data yang dikirim tidak lengkap'));
     expect(DomainErrorTranslator.translate(new InvariantError('ADDED_THREAD.NOT_MEET_DATA_TYPE_SPEC')))
-      .toStrictEqual(new InvariantError('tidak dapat membuat thread baru karena data yang dikirim tidak sesaui'));
+      .toStrictEqual(new InvariantError('tidak dapat membuat thread baru karena data yang dikirim tidak sesuai'));
+    expect(DomainErrorTranslator.translate(new InvariantError('ADDED_COMMENT.NOT_CONTAIN_NEEDED_PROPERTY')))
+      .toStrictEqual(new InvariantError('tidak dapat menambahkan comment karena data yang dikirimkan tidak lengkap'));
+    expect(DomainErrorTranslator.translate(new InvariantError('ADDED_COMMENT.NOT_MEET_DATA_TYPE_SPEC')))
+      .toStrictEqual(new InvariantError('tidak dapat membuat comment karena tipe data yang dikirimkan tidak sesuai'));
   });
 
   it('should return original error', () => {
