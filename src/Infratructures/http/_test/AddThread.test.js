@@ -140,7 +140,6 @@ describe('AddThread', () => {
       expect(typeof responseJson.data.addedThread.id).toEqual('string');
       expect(responseJson.data.addedThread.title).toEqual(addThreadPayload.title);
       expect(responseJson.data.addedThread.owner).toEqual('user-123');
-      console.log(responseJson.data.addedThread);
     });
   });
 });
