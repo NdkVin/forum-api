@@ -10,6 +10,7 @@ describe('AddThreadUseCase', () => {
       title: 'andika',
       body: 'andika',
     };
+    const owner = 'andika';
 
     const addThread = new AddThread(addThreadPayload);
 
@@ -31,10 +32,10 @@ describe('AddThreadUseCase', () => {
       threadRepository: mockThreadRepository,
     });
 
-    const result = await addThreadUseCase.execute(addThreadPayload);
+    const result = await addThreadUseCase.execute(addThreadPayload, owner);
 
     expect(result).toStrictEqual(expectedReturn);
     expect(mockThreadValidator.validate).toBeCalledWith(addThreadPayload);
-    expect(mockThreadRepository.addThread).toBeCalledWith(addThread);
+    expect(mockThreadRepository.addThread).toBeCalledWith(addThread, owner);
   });
 });

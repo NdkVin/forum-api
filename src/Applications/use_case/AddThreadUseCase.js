@@ -10,11 +10,11 @@ class AddThreadUseCase {
     this._threadRepository = threadRepository;
   }
 
-  async execute(payload) {
+  async execute(payload, owner) {
     this._validator.validate(payload);
 
     const addPayload = new AddThread(payload);
-    const result = await this._threadRepository.addThread(addPayload);
+    const result = await this._threadRepository.addThread(addPayload, owner);
 
     const addedThread = new AddedThread(result);
     return addedThread;
