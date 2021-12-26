@@ -45,6 +45,17 @@ describe('JoiLoginValidator', () => {
     expect(() => joiLoginValidator.validate(payload)).toThrowError('tidak dapat melakukan login karena username mengandung karakter terlarang');
   });
 
+  it('should throw error when send empt username', () => {
+    const payload = {
+      username: '',
+      password: 'andika',
+    };
+
+    const joiLoginValidator = new JoiLoginValidator(Joi);
+
+    expect(() => joiLoginValidator.validate(payload)).toThrowError('username tidak boleh kosong');
+  });
+
   it('should not throw error', () => {
     const payload = {
       username: 'andika',

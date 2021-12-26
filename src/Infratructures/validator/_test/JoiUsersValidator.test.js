@@ -25,6 +25,18 @@ describe('JoiUsersValidator', () => {
     expect(() => joiUsersValidator.validate(payload)).toThrowError('fullname harus berupa string');
   });
 
+  it('should return an error when sending empty fullname', () => {
+    const payload = {
+      username: 'andika',
+      password: 'andika',
+      fullname: '',
+    };
+
+    const joiUsersValidator = new JoiUsersValidator(Joi);
+
+    expect(() => joiUsersValidator.validate(payload)).toThrowError('fullname tidak boleh kosong');
+  });
+
   it('should throw Invariant error when send username too long', () => {
     const payload = {
       username: 'andikaandikaandikaandikaandikaandikaandikaandikaandikaandikaandikaandika',

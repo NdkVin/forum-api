@@ -12,6 +12,16 @@ describe('JoiRefreshAccessTokenValidator', () => {
     expect(() => joiRefreshAccessTokenValidator.validate(payload)).toThrowError('refresh token harus berupa string');
   });
 
+  it('should throw error when access token empty', () => {
+    const payload = {
+      refreshToken: '',
+    };
+
+    const joiRefreshAccessTokenValidator = new JoiRefreshAccessTokenValidator(Joi);
+
+    expect(() => joiRefreshAccessTokenValidator.validate(payload)).toThrowError('refresh token tidak boleh kosong');
+  });
+
   it('should throw error when access is empty', () => {
     const payload = {};
 

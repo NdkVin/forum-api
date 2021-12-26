@@ -31,6 +31,17 @@ describe('JoiAddThreadValidator', () => {
     expect(() => joiAddThreadValidator.validate(payload)).toThrowError('body harus berupa string');
   });
 
+  it('should throw error when send empty title payload', () => {
+    const payload = {
+      title: '',
+      body: 'andika',
+    };
+
+    const joiAddThreadValidator = new JoiAddThreadValidator(Joi);
+
+    expect(() => joiAddThreadValidator.validate(payload)).toThrowError('title tidak boleh kosong');
+  });
+
   it('should not throw error when send correct payload', () => {
     const payload = {
       title: 'andika',
