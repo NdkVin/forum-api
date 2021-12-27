@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 /* eslint-disable object-curly-newline */
 
 const pool = require('../src/Infratructures/database/postgres/pool');

@@ -2,7 +2,8 @@ const pool = require('../../database/postgres/pool');
 const UsersTableHelper = require('../../../../test/UsersTableTestHelper');
 const container = require('../../container');
 const createServer = require('../createServer');
-const ThreadsTableHelpers = require('../../../../test/ThreadsTableHelpers');
+const ThreadTableHelpers = require('../../../../test/ThreadsTableHelpers');
+const CommentTableHelpers = require('../../../../test/CommentTableHelpers');
 
 describe('AddThread', () => {
   afterAll(async () => {
@@ -11,20 +12,23 @@ describe('AddThread', () => {
 
   afterEach(async () => {
     await UsersTableHelper.cleanTable();
-    ThreadsTableHelpers.cleanTable();
+    await ThreadTableHelpers.cleanTable();
+    await CommentTableHelpers.cleanTable();
   });
 
-  describe('AddThread', () => {
+  describe('AddComment', () => {
     it('should return an error when send empty payload', async () => {
-      const addThreadPayload = {};
+      const addCommentPayload = {};
 
       await UsersTableHelper.addUser({});
+      await ThreadTableHelpers.addThread({});
+
       const server = await createServer(container);
 
       const response = await server.inject({
         method: 'POST',
-        url: '/threads',
-        payload: addThreadPayload,
+        url: '/threads/thread-123/comments',
+        payload: addCommentPayload,
         auth: {
           strategy: 'forumapi_api',
           credentials: {
@@ -35,72 +39,23 @@ describe('AddThread', () => {
       const responseJson = JSON.parse(response.payload);
       expect(response.statusCode).toEqual(400);
       expect(responseJson.status).toEqual('fail');
-      expect(responseJson.message).toEqual('title harus diisi');
-    });
-
-    it('should return an error when send incomplete payload', async () => {
-      const addThreadPayload = {
-        title: 'ini judul',
-      };
-
-      await UsersTableHelper.addUser({});
-      const server = await createServer(container);
-
-      const response = await server.inject({
-        method: 'POST',
-        url: '/threads',
-        payload: addThreadPayload,
-        auth: {
-          strategy: 'forumapi_api',
-          credentials: {
-            id: 'user-123',
-          },
-        },
-      });
-      const responseJson = JSON.parse(response.payload);
-      expect(response.statusCode).toEqual(400);
-      expect(responseJson.status).toEqual('fail');
-      expect(responseJson.message).toEqual('body harus diisi');
-    });
-
-    it('should return an error when send incomplete payload', async () => {
-      const addThreadPayload = {
-        body: 'ini body',
-      };
-
-      await UsersTableHelper.addUser({});
-      const server = await createServer(container);
-
-      const response = await server.inject({
-        method: 'POST',
-        url: '/threads',
-        payload: addThreadPayload,
-        auth: {
-          strategy: 'forumapi_api',
-          credentials: {
-            id: 'user-123',
-          },
-        },
-      });
-      const responseJson = JSON.parse(response.payload);
-      expect(response.statusCode).toEqual(400);
-      expect(responseJson.status).toEqual('fail');
-      expect(responseJson.message).toEqual('title harus diisi');
+      expect(responseJson.message).toEqual('content harus diisi');
     });
 
     it('should return an error when send incorrect data type on payload', async () => {
-      const addThreadPayload = {
-        title: 'andika',
-        body: true,
+      const addCommentPayload = {
+        content: 123,
       };
 
       await UsersTableHelper.addUser({});
+      await ThreadTableHelpers.addThread({});
+
       const server = await createServer(container);
 
       const response = await server.inject({
         method: 'POST',
-        url: '/threads',
-        payload: addThreadPayload,
+        url: '/threads/thread-123/comments',
+        payload: addCommentPayload,
         auth: {
           strategy: 'forumapi_api',
           credentials: {
@@ -111,43 +66,70 @@ describe('AddThread', () => {
       const responseJson = JSON.parse(response.payload);
       expect(response.statusCode).toEqual(400);
       expect(responseJson.status).toEqual('fail');
-      expect(responseJson.message).toEqual('body harus berupa string');
+      expect(responseJson.message).toEqual('content harus berupa string');
     });
 
-    it('should return error when not send authentications', async () => {
-      const addThreadPayload = {
-        title: 'ini judul',
-        body: 'ini body',
+    it('should return an error when send invalid thread id', async () => {
+      const addCommentPayload = {
+        content: 'ini content',
       };
 
       await UsersTableHelper.addUser({});
+
       const server = await createServer(container);
 
       const response = await server.inject({
         method: 'POST',
-        url: '/threads',
-        payload: addThreadPayload,
+        url: '/threads/thread-123/comments',
+        payload: addCommentPayload,
+        auth: {
+          strategy: 'forumapi_api',
+          credentials: {
+            id: 'user-123',
+          },
+        },
       });
+      const responseJson = JSON.parse(response.payload);
+      expect(response.statusCode).toEqual(404);
+      expect(responseJson.status).toEqual('fail');
+      expect(responseJson.message).toEqual('thread tidak ditemukan');
+    });
 
+    it('should return an error when not send autehntications', async () => {
+      const addCommentPayload = {
+        content: 'ini content',
+      };
+
+      await UsersTableHelper.addUser({});
+      await ThreadTableHelpers.addThread({});
+
+      const server = await createServer(container);
+
+      const response = await server.inject({
+        method: 'POST',
+        url: '/threads/thread-123/comments',
+        payload: addCommentPayload,
+      });
       const responseJson = JSON.parse(response.payload);
       expect(response.statusCode).toEqual(401);
       expect(responseJson.error).toEqual('Unauthorized');
       expect(responseJson.message).toEqual('Missing authentication');
     });
 
-    it('should not return error', async () => {
-      const addThreadPayload = {
-        title: 'ini judul',
-        body: 'ini body',
+    it('should not return error and add comment', async () => {
+      const addCommentPayload = {
+        content: 'ini contenet',
       };
 
       await UsersTableHelper.addUser({});
+      await ThreadTableHelpers.addThread({});
+
       const server = await createServer(container);
 
       const response = await server.inject({
         method: 'POST',
-        url: '/threads',
-        payload: addThreadPayload,
+        url: '/threads/thread-123/comments',
+        payload: addCommentPayload,
         auth: {
           strategy: 'forumapi_api',
           credentials: {
@@ -158,11 +140,9 @@ describe('AddThread', () => {
       const responseJson = JSON.parse(response.payload);
       expect(response.statusCode).toEqual(201);
       expect(responseJson.status).toEqual('success');
-      expect(responseJson.data).toBeDefined();
       expect(typeof responseJson.data).toEqual('object');
-      expect(typeof responseJson.data.addedThread.id).toEqual('string');
-      expect(responseJson.data.addedThread.title).toEqual(addThreadPayload.title);
-      expect(responseJson.data.addedThread.owner).toEqual('user-123');
+      expect(responseJson.data.addedComment.owner).toEqual('user-123');
+      expect(responseJson.data.addedComment.content).toEqual(addCommentPayload.content);
     });
   });
 });
