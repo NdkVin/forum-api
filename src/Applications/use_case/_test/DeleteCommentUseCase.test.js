@@ -13,7 +13,7 @@ describe('DeleteCommentUseCase', () => {
 
     mockThreadRepository.getThreadById = jest.fn()
       .mockImplementation(() => Promise.resolve);
-    mockCommentRepository.getCommentById = jest.fn()
+    mockCommentRepository.getCommentByIdAndThreadId = jest.fn()
       .mockImplementation(() => Promise.resolve);
     mockCommentRepository.checkCommentOwner = jest.fn()
       .mockImplementation(() => Promise.resolve);
@@ -28,7 +28,7 @@ describe('DeleteCommentUseCase', () => {
     await deleteComentUseCase.execute(threadId, commentId, owner);
 
     expect(mockThreadRepository.getThreadById).toBeCalledWith(threadId);
-    expect(mockCommentRepository.getCommentById).toBeCalledWith(commentId);
+    expect(mockCommentRepository.getCommentByIdAndThreadId).toBeCalledWith(threadId, commentId);
     expect(mockCommentRepository.checkCommentOwner).toBeCalledWith(owner, commentId);
     expect(mockCommentRepository.deleteComment).toBeCalledWith(threadId, commentId);
   });

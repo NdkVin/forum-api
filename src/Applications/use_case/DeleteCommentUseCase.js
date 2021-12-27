@@ -9,7 +9,7 @@ class DeleteCommentUseCase {
 
   async execute(threadId, commentId, owner) {
     await this._threadRepository.getThreadById(threadId);
-    await this._commentRepository.getCommentById(commentId);
+    await this._commentRepository.getCommentByIdAndThreadId(threadId, commentId);
     await this._commentRepository.checkCommentOwner(owner, commentId);
     await this._commentRepository.deleteComment(threadId, commentId);
   }
