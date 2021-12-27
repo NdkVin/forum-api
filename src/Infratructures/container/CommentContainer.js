@@ -17,6 +17,7 @@ const ThreadRepositoryPostgres = require('../repository/ThreadRepositoryPostgres
 const AddCommentValidator = require('../../Applications/validator/AddCommentValidator');
 const JoiAddCommentValidator = require('../validator/JoiAddCommentValidator');
 const AddCommentUseCase = require('../../Applications/use_case/AddCommentUseCase');
+const DeleteCommentUseCase = require('../../Applications/use_case/DeleteCommentUseCase');
 
 // container
 const container = createContainer();
@@ -77,6 +78,23 @@ container.register([
           name: 'validator',
           internal: AddCommentValidator.name,
         },
+        {
+          name: 'commentRepository',
+          internal: CommentRepository.name,
+        },
+        {
+          name: 'threadRepository',
+          internal: ThreadRepository.name,
+        },
+      ],
+    },
+  },
+  {
+    key: DeleteCommentUseCase.name,
+    Class: DeleteCommentUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
         {
           name: 'commentRepository',
           internal: CommentRepository.name,

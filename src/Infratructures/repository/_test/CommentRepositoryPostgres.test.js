@@ -126,7 +126,8 @@ describe('ThreadRepositoryPostgres', () => {
     const fakeIdGenerator = () => '123';
 
     const commnentRepositoryPostgres = new CommentRepositoryPostgres(pool, fakeIdGenerator);
-    const result = await commnentRepositoryPostgres.getCommentByIdAndThreadId(thread_id, comment_id)
+    const result = await commnentRepositoryPostgres
+      .getCommentByIdAndThreadId(thread_id, comment_id);
     expect(result).toHaveLength(1);
   });
 });
