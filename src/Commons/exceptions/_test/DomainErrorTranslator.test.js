@@ -15,6 +15,10 @@ describe('DomainErrorTranslator', () => {
       .toStrictEqual(new InvariantError('tidak dapat menambahkan comment karena data yang dikirimkan tidak lengkap'));
     expect(DomainErrorTranslator.translate(new InvariantError('ADDED_COMMENT.NOT_MEET_DATA_TYPE_SPEC')))
       .toStrictEqual(new InvariantError('tidak dapat membuat comment karena tipe data yang dikirimkan tidak sesuai'));
+    expect(DomainErrorTranslator.translate(new InvariantError('ADDED_REPLY.NOT_CONTAIN_NEEDED_PROPERTY')))
+      .toStrictEqual(new InvariantError('tidak dapat menambahkan reply karena data yang dikirimkan tidak lengkap'));
+    expect(DomainErrorTranslator.translate(new InvariantError('ADDED_REPLY.NOT_MEET_DATA_TYPE_SPEC')))
+      .toStrictEqual(new InvariantError('tidak dapat membuat reply karena tipe data yang dikirimkan tidak sesuai'));
   });
 
   it('should return original error', () => {
