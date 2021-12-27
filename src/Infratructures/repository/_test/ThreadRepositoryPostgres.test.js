@@ -38,4 +38,27 @@ describe('ThreadRepositoryPostgres', () => {
       expect(returningValues).toStrictEqual(expectedReturningValues);
     });
   });
+
+  describe('getThreadById', () => {
+    it('should get thread', async () => {
+      await UsersTableHelpers.addUser({});
+      const fakeIdGenerator = () => '123';
+      const expectedReturn = {
+        id: 'thread-123',
+        title: 'ini title',
+        body: 'ini body',
+        owner: 'user-123',
+        date: '27-12-21',
+      };
+
+      const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, fakeIdGenerator);
+
+      await ThreadsTableHelpers.addThread({});
+
+      const result = await threadRepositoryPostgres.getThreadById('thread-123');
+
+      expect(result).toHaveLength(1);
+      expect(result[0]).toStrictEqual(expectedReturn);
+    });
+  });
 });
