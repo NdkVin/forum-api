@@ -14,14 +14,14 @@ class GetThreadUseCase {
 
   async execute(threadId) {
     const thread = await this._threadRepository.getThreadById(threadId);
-    const getThread = new GetThread(thread);
+    const getThread = new GetThread(thread[0]);
     const replies = await this._replyRepository
       .getReplyByThreadId(threadId);
     const comments = await this._commentRepository.getCommentByThreadId(threadId);
 
     comments.forEach(async (comment) => {
       if (comment.is_delete) {
-        comment.content = '**balasan telah dihapus**';
+        comment.content = '**komentar telah dihapus**';
       }
       delete comment.is_delete;
 
@@ -35,6 +35,7 @@ class GetThreadUseCase {
         delete reply.is_delete;
         delete reply.comment_id;
       });
+      console.log(filteredReplies);
       comment.replies = filteredReplies;
     });
     getThread.comments = comments;
