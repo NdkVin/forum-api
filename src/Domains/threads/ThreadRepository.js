@@ -7,6 +7,10 @@ class ThreadRepository {
   async checkThreadById(id) {
     throw new Error('THREAD_REPOSITORY_METHOD.NOT_IMPLEMENTED');
   }
+
+  async getThreadById(id) {
+    throw new Error('THREAD_REPOSITORY_METHOD.NOT_IMPLEMENTED');
+  }
 }
 
 module.exports = ThreadRepository;

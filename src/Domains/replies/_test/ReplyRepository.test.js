@@ -12,5 +12,7 @@ describe('ReplyReplyRepository', () => {
       .rejects.toThrowError('REPLY_REPOSITORY_METHOD.NOT_IMPLEMENTED');
     await expect(() => replyReplyRepository.deleteReply(''))
       .rejects.toThrowError('REPLY_REPOSITORY_METHOD.NOT_IMPLEMENTED');
+    await expect(() => replyReplyRepository.getReplyBythreadIdAndCommentId('', ''))
+      .rejects.toThrowError('REPLY_REPOSITORY_METHOD.NOT_IMPLEMENTED');
   });
 });
