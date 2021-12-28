@@ -1,6 +1,8 @@
 const AddReplyValidator = require('../../validator/AddReplyValidator');
 const AddReply = require('../../../Domains/replies/entities/AddReply');
 const AddedReply = require('../../../Domains/replies/entities/AddedReply');
+const ThreadRepository = require('../../../Domains/threads/ThreadRepository');
+const CommentRepository = require('../../../Domains/comments/CommentRepository');
 const ReplyRepository = require('../../../Domains/replies/ReplyRepository');
 const AddReplyUseCase = require('../AddReplyUseCase');
 
@@ -24,15 +26,23 @@ describe('AddReplyUseCase', () => {
 
     const mockAddReplyValidator = new AddReplyValidator();
     const mockReplyrepository = new ReplyRepository();
+    const mockThreadRepository = new ThreadRepository();
+    const mockCommentRepository = new CommentRepository();
 
     mockAddReplyValidator.validate = jest.fn()
       .mockImplementation(() => Promise.resolve);
     mockReplyrepository.addReply = jest.fn()
       .mockImplementation(() => Promise.resolve(AddReplyResponse));
+    mockThreadRepository.checkThreadById = jest.fn()
+      .mockImplementation(() => Promise.resolve);
+    mockCommentRepository.checkCommentByIdAndThreadId = jest.fn()
+      .mockImplementation(() => Promise.resolve);
 
     const addReplyUseCase = new AddReplyUseCase({
       validator: mockAddReplyValidator,
       replyRepository: mockReplyrepository,
+      threadRepository: mockThreadRepository,
+      commentRepository: mockCommentRepository,
     });
 
     const result = await addReplyUseCase.execute(AddReplyPayload, threadId, commentId, owner);
@@ -40,5 +50,7 @@ describe('AddReplyUseCase', () => {
     expect(result).toStrictEqual(addedReply);
     expect(mockAddReplyValidator.validate).toBeCalledWith(AddReplyPayload);
     expect(mockReplyrepository.addReply).toBeCalledWith(addReply, threadId, commentId, owner);
+    expect(mockThreadRepository.checkThreadById).toBeCalledWith(threadId);
+    expect(mockCommentRepository.checkCommentByIdAndThreadId).toBeCalledWith(threadId, commentId);
   });
 });
