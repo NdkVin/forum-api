@@ -33,10 +33,11 @@ describe('GetThreadUseCase', () => {
     const responseReply = [
       {
         id: 'reply-123',
-        content: 'ini content',
+        content: 'ini asdas content',
         date: '27-12-21',
         username: 'andika',
         is_delete: false,
+        comment_id: 'comment-123',
       },
       {
         id: 'reply-321',
@@ -44,6 +45,7 @@ describe('GetThreadUseCase', () => {
         date: '27-12-21',
         username: 'andika',
         is_delete: true,
+        comment_id: 'comment-123',
       },
       {
         id: 'reply-12312',
@@ -51,6 +53,15 @@ describe('GetThreadUseCase', () => {
         date: '27-12-21',
         username: 'andika',
         is_delete: false,
+        comment_id: 'comment-321',
+      },
+      {
+        id: 'reply-12312',
+        content: 'ini ya asd content',
+        date: '27-12-21',
+        username: 'andika',
+        is_delete: true,
+        comment_id: 'comment-321',
       },
     ];
 
@@ -63,6 +74,8 @@ describe('GetThreadUseCase', () => {
       .mockImplementation(() => Promise.resolve(responseGetThread));
     mockCommentRepository.getCommentByThreadId = jest.fn()
       .mockImplementation(() => Promise.resolve(responseComment));
+    mockReplyRepository.getReplyByThreadId = jest.fn()
+      .mockImplementation(() => Promise.resolve(responseReply));
 
     const getThreadUseCase = new GetThreadUseCase({
       threadRepository: mockThreadRepository,
@@ -73,5 +86,8 @@ describe('GetThreadUseCase', () => {
     const result = await getThreadUseCase.execute(threadId);
 
     expect(mockThreadRepository.getThreadById).toBeCalledWith(threadId);
+    expect(mockCommentRepository.getCommentByThreadId).toBeCalledWith(threadId);
+    expect(mockReplyRepository.getReplyByThreadId).toBeCalledWith(threadId);
+    console.log(result.comments[0].replies);
   });
 });

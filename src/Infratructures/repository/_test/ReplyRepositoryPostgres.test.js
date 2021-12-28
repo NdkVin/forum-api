@@ -160,6 +160,7 @@ describe('ReplyRepositoryPostgres', () => {
         date: '27-12-21',
         username: 'andika',
         is_delete: false,
+        comment_id: 'comment-123',
       };
 
       const threadId = 'thread-123';
@@ -170,7 +171,7 @@ describe('ReplyRepositoryPostgres', () => {
       const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool, fakeIdGenerator);
 
       const result = await replyRepositoryPostgres
-        .getReplyBythreadIdAndCommentId(threadId, commentId);
+        .getReplyByThreadId(threadId, commentId);
 
       expect(result[0]).toStrictEqual(expectedResult);
     });
