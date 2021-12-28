@@ -5,6 +5,7 @@ const UsersTableHelpers = require('../../../../test/UsersTableTestHelper');
 const CommentTableHelpers = require('../../../../test/CommentTableHelpers');
 const AuthorizationError = require('../../../Commons/exceptions/AuthorizationError');
 const ReplyRepositoryPostgres = require('../ReplyRepositoryPostgres');
+const NotFoundError = require('../../../Commons/exceptions/NotFoundError');
 
 describe('ReplyRepositoryPostgres', () => {
   afterEach(async () => {
@@ -14,7 +15,7 @@ describe('ReplyRepositoryPostgres', () => {
     await ThreadsTableHelpers.cleanTable();
   });
 
-  afterEach(async () => {
+  afterAll(async () => {
     pool.end();
   });
 
@@ -43,10 +44,106 @@ describe('ReplyRepositoryPostgres', () => {
       const returningValue = await replyRepositoryPostgres
         .addReply(payload, threadId, commentId, owner);
 
-      const result = await ReplyTableHelper.getRelyById('reply-123');
+      const result = await ReplyTableHelper.getReplyById('reply-123');
 
       expect(result).toHaveLength(1);
       expect(returningValue).toStrictEqual(expectedReturningValues);
+    });
+  });
+
+  describe('CheckReplyOwner', () => {
+    it('should return error when owner not match', async () => {
+      await UsersTableHelpers.addUser({});
+      await ThreadsTableHelpers.addThread({});
+      await CommentTableHelpers.addComment({});
+      await ReplyTableHelper.addReply({});
+
+      const owner = 'user-321';
+      const replyId = 'reply-123';
+
+      const fakeIdGenerator = () => '123';
+
+      const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool, fakeIdGenerator);
+
+      await expect(() => replyRepositoryPostgres.checkReplyOwner(replyId, owner))
+        .rejects.toThrowError(AuthorizationError);
+    });
+
+    it('should not return error when owner match', async () => {
+      await UsersTableHelpers.addUser({});
+      await ThreadsTableHelpers.addThread({});
+      await CommentTableHelpers.addComment({});
+      await ReplyTableHelper.addReply({});
+
+      const owner = 'user-123';
+      const replyId = 'reply-123';
+
+      const fakeIdGenerator = () => '123';
+
+      const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool, fakeIdGenerator);
+      const ownerDb = await replyRepositoryPostgres.checkReplyOwner(replyId, owner);
+
+      expect(ownerDb).toEqual(owner);
+    });
+  });
+
+  describe('checkReply', () => {
+    it('should return error when reply not found', async () => {
+      await UsersTableHelpers.addUser({});
+      await ThreadsTableHelpers.addThread({});
+      await CommentTableHelpers.addComment({});
+
+      const threadId = 'thread-123';
+      const commentId = 'comment-123';
+      const replyId = 'reply-123';
+
+      const fakeIdGenerator = () => '123';
+
+      const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool, fakeIdGenerator);
+
+      await expect(() => replyRepositoryPostgres.checkReply(threadId, commentId, replyId))
+        .rejects.toThrowError(NotFoundError);
+    });
+
+    it('should not return error', async () => {
+      await UsersTableHelpers.addUser({});
+      await ThreadsTableHelpers.addThread({});
+      await CommentTableHelpers.addComment({});
+      await ReplyTableHelper.addReply({});
+
+      const threadId = 'thread-123';
+      const commentId = 'comment-123';
+      const replyId = 'reply-123';
+
+      const fakeIdGenerator = () => '123';
+
+      const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool, fakeIdGenerator);
+
+      const result = await replyRepositoryPostgres.checkReply(threadId, commentId, replyId);
+
+      expect(result).toHaveLength(1);
+      expect(result[0]).toBeDefined();
+    });
+  });
+
+  describe('deletereply', () => {
+    it('should not return error and delete reply', async () => {
+      await UsersTableHelpers.addUser({});
+      await ThreadsTableHelpers.addThread({});
+      await CommentTableHelpers.addComment({});
+      await ReplyTableHelper.addReply({});
+
+      const replyId = 'reply-123';
+
+      const fakeIdGenerator = () => '123';
+
+      const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool, fakeIdGenerator);
+
+      await replyRepositoryPostgres.deleteReply(replyId);
+
+      const result = await ReplyTableHelper.getReplyById(replyId);
+
+      expect(result[0].is_delete).toEqual(true);
     });
   });
 });

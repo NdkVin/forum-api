@@ -1,5 +1,7 @@
 const ReplyRepository = require('../../Domains/replies/ReplyRepository');
 const InvariantError = require('../../Commons/exceptions/InvariantError');
+const AuthorizationError = require('../../Commons/exceptions/AuthorizationError');
+const NotFoundError = require('../../Commons/exceptions/NotFoundError');
 
 class ReplyRepositoryPostgres extends ReplyRepository {
   constructor(pool, idGenerator) {
@@ -27,6 +29,51 @@ class ReplyRepositoryPostgres extends ReplyRepository {
     }
 
     return result.rows[0];
+  }
+
+  async checkReplyOwner(replyId, userId) {
+    const query = {
+      text: 'SELECT owner FROM replies WHERE id = $1',
+      values: [replyId],
+    };
+
+    const result = await this._pool.query(query);
+
+    const { owner } = result.rows[0];
+    if (owner !== userId) {
+      throw new AuthorizationError('anda tidak berhak menghapus ini');
+    }
+
+    return owner;
+  }
+
+  async checkReply(threadId, commentId, replyId) {
+    const query = {
+      text: 'SELECT * FROM replies WHERE thread_id = $1 AND comment_id = $2 AND id = $3',
+      values: [threadId, commentId, replyId],
+    };
+
+    const result = await this._pool.query(query);
+
+    if (!result.rowCount) {
+      throw new NotFoundError('reply tidak ditemukan');
+    }
+
+    return result.rows;
+  }
+
+  async deleteReply(replyId) {
+    const is_delete = true;
+    const query = {
+      text: 'UPDATE replies SET is_delete = $1 WHERE id = $2',
+      values: [is_delete, replyId],
+    };
+
+    const result = await this._pool.query(query);
+
+    if (!result.rowCount) {
+      throw new InvariantError('tidak dapt menghapus reply');
+    }
   }
 }
 

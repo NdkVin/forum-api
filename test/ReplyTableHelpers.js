@@ -14,7 +14,7 @@ const ReplyTableHelpers = {
     await pool.query(query);
   },
 
-  async getRelyById(id = 'reply-123') {
+  async getReplyById(id = 'reply-123') {
     const query = {
       text: 'SELECT * FROM replies WHERE id = $1',
       values: [id],
