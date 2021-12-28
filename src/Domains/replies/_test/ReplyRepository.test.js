@@ -6,5 +6,11 @@ describe('ReplyReplyRepository', () => {
 
     await expect(() => replyReplyRepository.addReply({}, '', '', ''))
       .rejects.toThrowError('REPLY_REPOSITORY_METHOD.NOT_IMPLEMENTED');
+    await expect(() => replyReplyRepository.checkReplyOwner('', ''))
+      .rejects.toThrowError('REPLY_REPOSITORY_METHOD.NOT_IMPLEMENTED');
+    await expect(() => replyReplyRepository.checkReply('', '', ''))
+      .rejects.toThrowError('REPLY_REPOSITORY_METHOD.NOT_IMPLEMENTED');
+    await expect(() => replyReplyRepository.deleteReply(''))
+      .rejects.toThrowError('REPLY_REPOSITORY_METHOD.NOT_IMPLEMENTED');
   });
 });

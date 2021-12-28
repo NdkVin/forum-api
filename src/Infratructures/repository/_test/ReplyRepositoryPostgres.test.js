@@ -3,6 +3,7 @@ const ReplyTableHelper = require('../../../../test/ReplyTableHelpers');
 const ThreadsTableHelpers = require('../../../../test/ThreadsTableHelpers');
 const UsersTableHelpers = require('../../../../test/UsersTableTestHelper');
 const CommentTableHelpers = require('../../../../test/CommentTableHelpers');
+const AuthorizationError = require('../../../Commons/exceptions/AuthorizationError');
 const ReplyRepositoryPostgres = require('../ReplyRepositoryPostgres');
 
 describe('ReplyRepositoryPostgres', () => {
@@ -14,7 +15,7 @@ describe('ReplyRepositoryPostgres', () => {
   });
 
   afterEach(async () => {
-    await pool.end();
+    pool.end();
   });
 
   describe('Addreply', () => {
