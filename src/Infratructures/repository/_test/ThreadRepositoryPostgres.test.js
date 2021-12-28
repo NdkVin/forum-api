@@ -39,7 +39,7 @@ describe('ThreadRepositoryPostgres', () => {
     });
   });
 
-  describe('getThreadById', () => {
+  describe('checkThreadById', () => {
     it('should get thread', async () => {
       await UsersTableHelpers.addUser({});
       const fakeIdGenerator = () => '123';
@@ -55,7 +55,7 @@ describe('ThreadRepositoryPostgres', () => {
 
       await ThreadsTableHelpers.addThread({});
 
-      const result = await threadRepositoryPostgres.getThreadById('thread-123');
+      const result = await threadRepositoryPostgres.checkThreadById('thread-123');
 
       expect(result).toHaveLength(1);
       expect(result[0]).toStrictEqual(expectedReturn);

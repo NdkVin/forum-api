@@ -99,7 +99,7 @@ describe('ThreadRepositoryPostgres', () => {
     });
   });
 
-  describe('getCommentByIdAndThreadId', () => {
+  describe('checkCommentByIdAndThreadId', () => {
     it('should throw error when comment not found', async () => {
       await UsersTableHelpers.addUser({});
       await ThreadsTableHelpers.addThread({});
@@ -111,7 +111,7 @@ describe('ThreadRepositoryPostgres', () => {
       const commnentRepositoryPostgres = new CommentRepositoryPostgres(pool, fakeIdGenerator);
 
       await expect(() => commnentRepositoryPostgres
-        .getCommentByIdAndThreadId(thread_id, comment_id))
+        .checkCommentByIdAndThreadId(thread_id, comment_id))
         .rejects.toThrowError(NotFoundError);
     });
   });
@@ -127,7 +127,7 @@ describe('ThreadRepositoryPostgres', () => {
 
     const commnentRepositoryPostgres = new CommentRepositoryPostgres(pool, fakeIdGenerator);
     const result = await commnentRepositoryPostgres
-      .getCommentByIdAndThreadId(thread_id, comment_id);
+      .checkCommentByIdAndThreadId(thread_id, comment_id);
     expect(result).toHaveLength(1);
   });
 });

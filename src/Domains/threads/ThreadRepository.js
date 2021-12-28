@@ -4,7 +4,7 @@ class ThreadRepository {
     throw new Error('THREAD_REPOSITORY_METHOD.NOT_IMPLEMENTED');
   }
 
-  async getThreadById(id) {
+  async checkThreadById(id) {
     throw new Error('THREAD_REPOSITORY_METHOD.NOT_IMPLEMENTED');
   }
 }

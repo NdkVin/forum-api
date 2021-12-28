@@ -12,7 +12,7 @@ class CommentRepository {
     throw new Error('COMMENT_REPOSITORY_METHOD.NOT_IMPLEMENTED');
   }
 
-  async getCommentByIdAndThreadId(thread_id, comment_id) {
+  async checkCommentByIdAndThreadId(thread_id, comment_id) {
     throw new Error('COMMENT_REPOSITORY_METHOD.NOT_IMPLEMENTED');
   }
 }

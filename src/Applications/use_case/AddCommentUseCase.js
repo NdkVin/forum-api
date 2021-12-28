@@ -16,7 +16,7 @@ class AddCommentUseCase {
     this._validator.validate(payload);
 
     const addComment = new AddComment(payload);
-    await this._threadRepository.getThreadById(thread_id);
+    await this._threadRepository.checkThreadById(thread_id);
     const result = await this._commentRepository.addComment(addComment, owner, thread_id);
 
     const addedComment = new AddedComment(result);
