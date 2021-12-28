@@ -75,6 +75,17 @@ class ReplyRepositoryPostgres extends ReplyRepository {
       throw new InvariantError('tidak dapt menghapus reply');
     }
   }
+
+  async getReplyBythreadIdAndCommentId(threadId, replyId) {
+    const query = {
+      text: 'SELECT replies.id, replies.content, replies.date, users.username FROM replies LEFT JOIN users ON replies.owner = users.id WHERE replies.thread_id = $1 AND replies.comment_id = $2 ORDER BY replies.date ASC',
+      values: [threadId, replyId],
+    };
+
+    const result = await this._pool.query(query);
+
+    return result.rows;
+  }
 }
 
 module.exports = ReplyRepositoryPostgres;

@@ -146,4 +146,32 @@ describe('ReplyRepositoryPostgres', () => {
       expect(result[0].is_delete).toEqual(true);
     });
   });
+
+  describe('deletereply', () => {
+    it('should not return error and delete reply', async () => {
+      await UsersTableHelpers.addUser({});
+      await ThreadsTableHelpers.addThread({});
+      await CommentTableHelpers.addComment({});
+      await ReplyTableHelper.addReply({});
+
+      const expectedResult = {
+        id: 'reply-123',
+        content: 'ini content',
+        date: '27-12-21',
+        username: 'andika',
+      };
+
+      const threadId = 'thread-123';
+      const commentId = 'comment-123';
+
+      const fakeIdGenerator = () => '123';
+
+      const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool, fakeIdGenerator);
+
+      const result = await replyRepositoryPostgres
+        .getReplyBythreadIdAndCommentId(threadId, commentId);
+
+      expect(result[0]).toStrictEqual(expectedResult);
+    });
+  });
 });

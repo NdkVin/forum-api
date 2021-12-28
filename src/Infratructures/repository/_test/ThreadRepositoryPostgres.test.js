@@ -2,6 +2,7 @@ const pool = require('../../database/postgres/pool');
 const ThreadRepositoryPostgres = require('../ThreadRepositoryPostgres');
 const ThreadsTableHelpers = require('../../../../test/ThreadsTableHelpers');
 const UsersTableHelpers = require('../../../../test/UsersTableTestHelper');
+const NotFoundError = require('../../../Commons/exceptions/NotFoundError');
 
 describe('ThreadRepositoryPostgres', () => {
   afterEach(async () => {
@@ -59,6 +60,40 @@ describe('ThreadRepositoryPostgres', () => {
 
       expect(result).toHaveLength(1);
       expect(result[0]).toStrictEqual(expectedReturn);
+    });
+  });
+
+  describe('getThreadById', () => {
+    it('should throw error when thread not found', async () => {
+      await UsersTableHelpers.addUser({});
+
+      const fakeIdGenerator = () => '123';
+
+      const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, fakeIdGenerator);
+
+      await expect(() => threadRepositoryPostgres.getThreadById('thread-123'))
+        .rejects.toThrowError(NotFoundError);
+    });
+
+    it('should get thread', async () => {
+      await UsersTableHelpers.addUser({});
+      await ThreadsTableHelpers.addThread({});
+
+      const expectedResult = {
+        id: 'thread-123',
+        title: 'ini title',
+        body: 'ini body',
+        date: '27-12-21',
+        username: 'andika',
+      };
+
+      const fakeIdGenerator = () => '123';
+
+      const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, fakeIdGenerator);
+
+      const result = await threadRepositoryPostgres.getThreadById('thread-123');
+
+      expect(result[0]).toStrictEqual(expectedResult);
     });
   });
 });
