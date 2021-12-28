@@ -19,6 +19,10 @@ describe('DomainErrorTranslator', () => {
       .toStrictEqual(new InvariantError('tidak dapat menambahkan reply karena data yang dikirimkan tidak lengkap'));
     expect(DomainErrorTranslator.translate(new InvariantError('ADDED_REPLY.NOT_MEET_DATA_TYPE_SPEC')))
       .toStrictEqual(new InvariantError('tidak dapat membuat reply karena tipe data yang dikirimkan tidak sesuai'));
+    expect(DomainErrorTranslator.translate(new InvariantError('GET_THREAD.NOT_CONTAIN_NEEDED_PROPERTY')))
+      .toStrictEqual(new InvariantError('tidak dapat mendapatkan thread karena data yang diterima tidak lengkap'));
+    expect(DomainErrorTranslator.translate(new InvariantError('GET_THREAD.NOT_MEET_DATA_TYPE_SPEC')))
+      .toStrictEqual(new InvariantError('tidak dapt menampilkan thread karena tipe data yang dikirimkan tidak sesuai'));
   });
 
   it('should return original error', () => {

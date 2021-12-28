@@ -159,6 +159,7 @@ describe('ReplyRepositoryPostgres', () => {
         content: 'ini content',
         date: '27-12-21',
         username: 'andika',
+        is_delete: false,
       };
 
       const threadId = 'thread-123';

@@ -142,6 +142,7 @@ describe('ThreadRepositoryPostgres', () => {
         username: 'andika',
         date: '27-12-21',
         content: 'ini content',
+        is_delete: false,
       };
 
       const thread_id = 'thread-123';
