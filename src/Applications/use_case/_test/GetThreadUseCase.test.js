@@ -83,11 +83,10 @@ describe('GetThreadUseCase', () => {
       replyRepository: mockReplyRepository,
     });
 
-    const result = await getThreadUseCase.execute(threadId);
+    await getThreadUseCase.execute(threadId);
 
     expect(mockThreadRepository.getThreadById).toBeCalledWith(threadId);
     expect(mockCommentRepository.getCommentByThreadId).toBeCalledWith(threadId);
     expect(mockReplyRepository.getReplyByThreadId).toBeCalledWith(threadId);
-    console.log(result.comments[0].replies);
   });
 });
