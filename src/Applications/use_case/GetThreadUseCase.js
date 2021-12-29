@@ -14,6 +14,8 @@ class GetThreadUseCase {
 
   async execute(threadId) {
     const thread = await this._threadRepository.getThreadById(threadId);
+    console.log('ini thread');
+    console.log(thread[0]);
     const getThread = new GetThread(thread[0]);
     const replies = await this._replyRepository
       .getReplyByThreadId(threadId);

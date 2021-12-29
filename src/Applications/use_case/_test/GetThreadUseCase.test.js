@@ -5,13 +5,13 @@ const GetThreadUseCase = require('../GetThreadUseCase');
 
 describe('GetThreadUseCase', () => {
   it('should orchesting the get thread action correctly', async () => {
-    const responseGetThread = {
-      id: 'thread-123',
-      title: 'ini title',
-      body: 'ini body',
-      date: 'ini tanggal',
-      username: 'user-123',
-    };
+    const responseGetThread = [{
+      id: 'thread-fxZEbdhLCddxRShB',
+      title: 'sebuah thread',
+      body: 'sebuah body thread',
+      date: '2021-12-29T15:34:06.045Z',
+      username: 'dicoding',
+    }];
 
     const responseComment = [
       {
