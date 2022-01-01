@@ -131,6 +131,21 @@ describe('ReplyRepositoryPostgres', () => {
       await UsersTableHelpers.addUser({});
       await ThreadsTableHelpers.addThread({});
       await CommentTableHelpers.addComment({});
+
+      const replyId = 'reply-123';
+
+      const fakeIdGenerator = () => '123';
+
+      const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool, fakeIdGenerator);
+
+      await expect(() => replyRepositoryPostgres.deleteReply(replyId))
+        .rejects.toThrowError(NotFoundError);
+    });
+
+    it('should not return error and delete reply', async () => {
+      await UsersTableHelpers.addUser({});
+      await ThreadsTableHelpers.addThread({});
+      await CommentTableHelpers.addComment({});
       await ReplyTableHelper.addReply({});
 
       const replyId = 'reply-123';
@@ -147,7 +162,7 @@ describe('ReplyRepositoryPostgres', () => {
     });
   });
 
-  describe('deletereply', () => {
+  describe('get reply by id', () => {
     it('should not return error and delete reply', async () => {
       await UsersTableHelpers.addUser({});
       await ThreadsTableHelpers.addThread({});

@@ -1,5 +1,4 @@
 const ReplyRepository = require('../../Domains/replies/ReplyRepository');
-const InvariantError = require('../../Commons/exceptions/InvariantError');
 const AuthorizationError = require('../../Commons/exceptions/AuthorizationError');
 const NotFoundError = require('../../Commons/exceptions/NotFoundError');
 
@@ -23,10 +22,6 @@ class ReplyRepositoryPostgres extends ReplyRepository {
     };
 
     const result = await this._pool.query(query);
-
-    if (!result.rowCount) {
-      throw new InvariantError('tidak dapat menambahkan reply');
-    }
 
     return result.rows[0];
   }
@@ -72,7 +67,7 @@ class ReplyRepositoryPostgres extends ReplyRepository {
     const result = await this._pool.query(query);
 
     if (!result.rowCount) {
-      throw new InvariantError('tidak dapt menghapus reply');
+      throw new NotFoundError('tidak dapt menghapus reply');
     }
   }
 

@@ -27,10 +27,8 @@ class JoiUsersValidator extends UsersValidator {
       }),
     });
     const { username } = payload;
-    if (typeof username === 'string') {
-      if (username && !username.match(/^[\w]+$/)) {
-        throw new InvariantError('tidak dapat membuat user baru karena username mengandung karakter terlarang');
-      }
+    if (username && typeof username === 'string' && !username.match(/^[\w]+$/)) {
+      throw new InvariantError('tidak dapat membuat user baru karena username mengandung karakter terlarang');
     }
 
     const validateResult = LoginSchema.validate(payload);

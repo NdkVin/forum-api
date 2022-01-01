@@ -1,7 +1,6 @@
 const CommentRepository = require('../../Domains/comments/CommentRepository');
-const InvariantError = require('../../Commons/exceptions/InvariantError');
-const AuthorizationError = require('../../Commons/exceptions/AuthorizationError');
 const NotFoundError = require('../../Commons/exceptions/NotFoundError');
+const AuthorizationError = require('../../Commons/exceptions/AuthorizationError');
 
 class CommentRepositoryPostgres extends CommentRepository {
   constructor(pool, idGenerator) {
@@ -24,10 +23,6 @@ class CommentRepositoryPostgres extends CommentRepository {
 
     const result = await this._pool.query(query);
 
-    if (!result.rowCount) {
-      throw new InvariantError('tidak dapat menambahkan comment');
-    }
-
     return result.rows[0];
   }
 
@@ -42,7 +37,7 @@ class CommentRepositoryPostgres extends CommentRepository {
     const reuslt = await this._pool.query(query);
 
     if (!reuslt.rowCount) {
-      throw new InvariantError('tidak dapat menghapus comment');
+      throw new NotFoundError('tidak dapat menghapus comment');
     }
   }
 

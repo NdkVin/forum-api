@@ -22,10 +22,8 @@ class JoiLoginValidator extends LoginValidator {
       }),
     });
     const { username } = payload;
-    if (typeof username === 'string') {
-      if (username && !username.match(/^[\w]+$/)) {
-        throw new InvariantError('tidak dapat melakukan login karena username mengandung karakter terlarang');
-      }
+    if (username && typeof username === 'string' && !username.match(/^[\w]+$/)) {
+      throw new InvariantError('tidak dapat melakukan login karena username mengandung karakter terlarang');
     }
 
     const validateResult = UsersSchema.validate(payload);

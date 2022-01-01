@@ -18,6 +18,7 @@ describe('GetThread', () => {
       body: true,
       date: 123,
       username: 123,
+      comments: [],
     };
 
     expect(() => new GetThread(payload))
@@ -31,6 +32,7 @@ describe('GetThread', () => {
       body: 'true',
       date: '123',
       username: '123',
+      comments: [],
     };
     const getThread = new GetThread(payload);
 

@@ -48,6 +48,19 @@ describe('ThreadRepositoryPostgres', () => {
   });
 
   describe('DeleteComment', () => {
+    it('should return error when comment not found', async () => {
+      await UsersTableHelpers.addUser({});
+      await ThreadsTableHelpers.addThread({});
+
+      const comment_id = 'comment-123';
+      const thread_id = 'thread-123';
+      const fakeIdGenerator = () => '123';
+
+      const commnentRepositoryPostgres = new CommentRepositoryPostgres(pool, fakeIdGenerator);
+
+      await expect(() => commnentRepositoryPostgres.deleteComment(thread_id, comment_id))
+        .rejects.toThrowError(NotFoundError);
+    });
     it('should delete comment', async () => {
       await UsersTableHelpers.addUser({});
       await ThreadsTableHelpers.addThread({});
