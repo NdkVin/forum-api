@@ -4,12 +4,9 @@ const { createContainer } = require('instances-container');
 
 // external agency
 const { nanoid } = require('nanoid');
-const Joi = require('joi');
 const pool = require('../database/postgres/pool');
 
 // service
-const ReplyRepository = require('../../Domains/replies/ReplyRepository');
-const ReplyRepositoryPostgres = require('../repository/ReplyRepositoryPostgres');
 const CommentRepository = require('../../Domains/comments/CommentRepository');
 const CommentRepositoryPostgres = require('../repository/CommentRepositoryPostgres');
 const ThreadRepository = require('../../Domains/threads/ThreadRepository');
@@ -17,10 +14,7 @@ const ThreadRepositoryPostgres = require('../repository/ThreadRepositoryPostgres
 const LikeRepository = require('../../Domains/likes/LikeRepository');
 const LikeRepositoryPostgres = require('../repository/LikeRepositoryPostgres');
 // use case
-const AddThreadValidator = require('../../Applications/validator/AddThreadValidator');
-const JoiAddThreadValidator = require('../validator/JoiAddThreadValidator');
-const AddThreadUseCase = require('../../Applications/use_case/AddThreadUseCase');
-const GetThreadUseCase = require('../../Applications/use_case/GetThreadUseCase');
+const LikeCommentUseCase = require('../../Applications/use_case/LikeCommentUseCase');
 
 // container
 const container = createContainer();
@@ -29,8 +23,8 @@ const container = createContainer();
 
 container.register([
   {
-    key: ReplyRepository.name,
-    Class: ReplyRepositoryPostgres,
+    key: CommentRepository.name,
+    Class: CommentRepositoryPostgres,
     parameter: {
       dependencies: [
         {
@@ -43,8 +37,8 @@ container.register([
     },
   },
   {
-    key: CommentRepository.name,
-    Class: CommentRepositoryPostgres,
+    key: LikeRepository.name,
+    Class: LikeRepositoryPostgres,
     parameter: {
       dependencies: [
         {
@@ -70,55 +64,13 @@ container.register([
       ],
     },
   },
-  {
-    key: AddThreadValidator.name,
-    Class: JoiAddThreadValidator,
-    parameter: {
-      dependencies: [
-        {
-          concrete: Joi,
-        },
-      ],
-    },
-  },
-  {
-    key: LikeRepository.name,
-    Class: LikeRepositoryPostgres,
-    parameter: {
-      dependencies: [
-        {
-          concrete: pool,
-        },
-        {
-          concrete: nanoid,
-        },
-      ],
-    },
-  },
 ]);
 
 // register use case
 container.register([
   {
-    key: AddThreadUseCase.name,
-    Class: AddThreadUseCase,
-    parameter: {
-      injectType: 'destructuring',
-      dependencies: [
-        {
-          name: 'validator',
-          internal: AddThreadValidator.name,
-        },
-        {
-          name: 'threadRepository',
-          internal: ThreadRepository.name,
-        },
-      ],
-    },
-  },
-  {
-    key: GetThreadUseCase.name,
-    Class: GetThreadUseCase,
+    key: LikeCommentUseCase.name,
+    Class: LikeCommentUseCase,
     parameter: {
       injectType: 'destructuring',
       dependencies: [
@@ -129,10 +81,6 @@ container.register([
         {
           name: 'commentRepository',
           internal: CommentRepository.name,
-        },
-        {
-          name: 'replyRepository',
-          internal: ReplyRepository.name,
         },
         {
           name: 'likeRepository',

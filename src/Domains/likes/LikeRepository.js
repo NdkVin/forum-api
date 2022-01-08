@@ -12,7 +12,7 @@ class LikeRepository {
     throw new Error('LIKE_REPOSITORY_METHOD.NOT_IMPLEMENTED');
   }
 
-  async countLike(threadId, commentId, userId) {
+  async countLike(threadId) {
     throw new Error('LIKE_REPOSITORY_METHOD.NOT_IMPLEMENTED');
   }
 }

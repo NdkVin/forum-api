@@ -51,6 +51,17 @@ class LikeRepositoryPostgres extends LikeRepository {
 
     return 'unlike';
   }
+
+  async countLike(threadId) {
+    const query = {
+      text: 'SELECT COUNT(id), comment_id FROM table_comment_like WHERE thread_id = $1 GROUP BY comment_id ORDER BY comment_id ASC',
+      values: [threadId],
+    };
+
+    const result = await this._pool.query(query);
+
+    return result.rows;
+  }
 }
 
 module.exports = LikeRepositoryPostgres;

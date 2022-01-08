@@ -1,11 +1,11 @@
 class LikeCommentUseCase {
   constructor({
     threadRepository,
-    commentrepository,
+    commentRepository,
     likeRepository,
   }) {
     this._threadRepository = threadRepository;
-    this._commentRepository = commentrepository;
+    this._commentRepository = commentRepository;
     this._likeRepository = likeRepository;
   }
 
