@@ -22,14 +22,10 @@ describe('RefreshAccessTokenUseCase', () => {
     const mockTokenManager = new TokenManager();
     const mockAuthsRepository = new AuthsRepository();
 
-    mockRefreshAccessTokenValidator.validate = jest.fn()
-      .mockImplementation(() => Promise.resolve);
-    mockAuthsRepository.checkRefreshToken = jest.fn()
-      .mockImplementation(() => Promise.resolve);
-    mockTokenManager.verifyRefreshToken = jest.fn()
-      .mockImplementation(() => expectTokenManager);
-    mockTokenManager.generateAccessToken = jest.fn()
-      .mockImplementation(() => expectAccessToken);
+    mockRefreshAccessTokenValidator.validate = jest.fn(() => Promise.resolve);
+    mockAuthsRepository.checkRefreshToken = jest.fn(() => Promise.resolve);
+    mockTokenManager.verifyRefreshToken = jest.fn(() => expectTokenManager);
+    mockTokenManager.generateAccessToken = jest.fn(() => expectAccessToken);
 
     const refreshAccessTokenUseCase = new RefreshAccessTokenUseCase({
       validator: mockRefreshAccessTokenValidator,

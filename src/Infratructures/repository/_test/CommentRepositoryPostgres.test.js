@@ -73,7 +73,8 @@ describe('ThreadRepositoryPostgres', () => {
       const commnentRepositoryPostgres = new CommentRepositoryPostgres(pool, fakeIdGenerator);
 
       await commnentRepositoryPostgres.deleteComment(thread_id, comment_id);
-
+      await expect(commnentRepositoryPostgres.deleteComment(thread_id, comment_id))
+        .resolves.not.toThrowError();
       const result = await CommentTableHelpers.getCommentById(comment_id);
 
       expect(result).toHaveLength(1);

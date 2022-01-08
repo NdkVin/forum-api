@@ -29,14 +29,10 @@ describe('AddReplyUseCase', () => {
     const mockThreadRepository = new ThreadRepository();
     const mockCommentRepository = new CommentRepository();
 
-    mockAddReplyValidator.validate = jest.fn()
-      .mockImplementation(() => Promise.resolve);
-    mockReplyrepository.addReply = jest.fn()
-      .mockImplementation(() => Promise.resolve(AddReplyResponse));
-    mockThreadRepository.checkThreadById = jest.fn()
-      .mockImplementation(() => Promise.resolve);
-    mockCommentRepository.checkCommentByIdAndThreadId = jest.fn()
-      .mockImplementation(() => Promise.resolve);
+    mockAddReplyValidator.validate = jest.fn(() => Promise.resolve);
+    mockReplyrepository.addReply = jest.fn(() => Promise.resolve(AddReplyResponse));
+    mockThreadRepository.checkThreadById = jest.fn(() => Promise.resolve);
+    mockCommentRepository.checkCommentByIdAndThreadId = jest.fn(() => Promise.resolve);
 
     const addReplyUseCase = new AddReplyUseCase({
       validator: mockAddReplyValidator,

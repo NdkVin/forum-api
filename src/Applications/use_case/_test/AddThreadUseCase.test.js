@@ -22,10 +22,8 @@ describe('AddThreadUseCase', () => {
     const mockThreadValidator = new AddThreadValidator();
     const mockThreadRepository = new ThreadRepository();
 
-    mockThreadValidator.validate = jest.fn()
-      .mockImplementation(() => Promise.resolve);
-    mockThreadRepository.addThread = jest.fn()
-      .mockImplementation(() => Promise.resolve(expectedReturn));
+    mockThreadValidator.validate = jest.fn(() => Promise.resolve);
+    mockThreadRepository.addThread = jest.fn(() => Promise.resolve(expectedReturn));
 
     const addThreadUseCase = new AddThreadUseCase({
       validator: mockThreadValidator,

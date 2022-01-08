@@ -11,12 +11,9 @@ describe('LogoutUseCase', () => {
     const mockRefreshAccessTokenValidator = new RefreshAccessTokenValidator();
     const mockAuthsRepository = new AutsRepository();
 
-    mockRefreshAccessTokenValidator.validate = jest.fn()
-      .mockImplementation(() => Promise.resolve);
-    mockAuthsRepository.checkDelete = jest.fn()
-      .mockImplementation(() => Promise.resolve);
-    mockAuthsRepository.deleteToken = jest.fn()
-      .mockImplementation(() => Promise.resolve);
+    mockRefreshAccessTokenValidator.validate = jest.fn(() => Promise.resolve);
+    mockAuthsRepository.checkDelete = jest.fn(() => Promise.resolve);
+    mockAuthsRepository.deleteToken = jest.fn(() => Promise.resolve);
 
     const logoutUseCase = new LogoutUseCase({
       validator: mockRefreshAccessTokenValidator,

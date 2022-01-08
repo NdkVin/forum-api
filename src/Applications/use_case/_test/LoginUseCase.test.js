@@ -29,18 +29,13 @@ describe('LoginUseCase', () => {
     const mockTokenManager = new TokenManager();
     const mockAuthsRepository = new AuthsRepository();
 
-    mockLoginValidator.validate = jest.fn()
-      .mockImplementation(() => Promise.resolve);
-    mockUserRepository.getIdAndPasswordByUsername = jest.fn()
-      .mockImplementation(() => Promise.resolve(expectedUserRepository));
-    mockPasswordHash.compare = jest.fn()
-      .mockImplementation(() => Promise.resolve);
-    mockTokenManager.generateAccessToken = jest.fn()
-      .mockImplementation(() => 'accessToken');
-    mockTokenManager.generateRefreshToken = jest.fn()
-      .mockImplementation(() => 'refreshToken');
-    mockAuthsRepository.addToken = jest.fn()
-      .mockImplementation(() => Promise.resolve);
+    mockLoginValidator.validate = jest.fn(() => Promise.resolve);
+    mockUserRepository.getIdAndPasswordByUsername = jest
+      .fn(() => Promise.resolve(expectedUserRepository));
+    mockPasswordHash.compare = jest.fn(() => Promise.resolve);
+    mockTokenManager.generateAccessToken = jest.fn(() => 'accessToken');
+    mockTokenManager.generateRefreshToken = jest.fn(() => 'refreshToken');
+    mockAuthsRepository.addToken = jest.fn(() => Promise.resolve);
 
     const loginUseCase = new LoginUseCase({
       validator: mockLoginValidator,

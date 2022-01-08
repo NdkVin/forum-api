@@ -11,14 +11,10 @@ describe('DeleteCommentUseCase', () => {
     const mockThreadRepository = new ThreadRepository();
     const mockCommentRepository = new CommentRepository();
 
-    mockThreadRepository.checkThreadById = jest.fn()
-      .mockImplementation(() => Promise.resolve);
-    mockCommentRepository.checkCommentByIdAndThreadId = jest.fn()
-      .mockImplementation(() => Promise.resolve);
-    mockCommentRepository.checkCommentOwner = jest.fn()
-      .mockImplementation(() => Promise.resolve);
-    mockCommentRepository.deleteComment = jest.fn()
-      .mockImplementation(() => Promise.resolve);
+    mockThreadRepository.checkThreadById = jest.fn(() => Promise.resolve);
+    mockCommentRepository.checkCommentByIdAndThreadId = jest.fn(() => Promise.resolve);
+    mockCommentRepository.checkCommentOwner = jest.fn(() => Promise.resolve);
+    mockCommentRepository.deleteComment = jest.fn(() => Promise.resolve);
 
     const deleteComentUseCase = new DeleteCommentUseCase({
       threadRepository: mockThreadRepository,
