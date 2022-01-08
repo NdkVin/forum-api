@@ -1,0 +1,56 @@
+/* eslint-disable no-else-return */
+const InvariantError = require('../../Commons/exceptions/InvariantError');
+
+const LikeRepository = require('../../Domains/likes/LikeRepository');
+
+class LikeRepositoryPostgres extends LikeRepository {
+  constructor(pool, idGenerator) {
+    super();
+
+    this._pool = pool;
+    this._idGenerator = idGenerator;
+  }
+
+  async checkLike(threadId, commentId, userId) {
+    const query = {
+      text: 'SELECT * from table_comment_like where thread_id = $1 AND comment_id = $2 AND user_id = $3',
+      values: [threadId, commentId, userId],
+    };
+
+    const { rowCount } = await this._pool.query(query);
+    return rowCount;
+  }
+
+  async like(threadId, commentId, userId) {
+    const id = `like-${this._idGenerator(16)}`;
+    const query = {
+      text: 'INSERT INTO table_comment_like VALUES($1, $2, $3, $4)',
+      values: [id, userId, threadId, commentId],
+    };
+
+    const result = await this._pool.query(query);
+
+    if (!result.rowCount) {
+      throw new InvariantError('tidak bisa like');
+    }
+
+    return 'like';
+  }
+
+  async unlike(threadId, commentId, userId) {
+    const query = {
+      text: 'DELETE from table_comment_like WHERE user_id = $1 AND thread_id = $2 AND comment_id = $3',
+      values: [userId, threadId, commentId],
+    };
+
+    const result = await this._pool.query(query);
+
+    if (!result.rowCount) {
+      throw new InvariantError('tidak bisa unlike');
+    }
+
+    return 'unlike';
+  }
+}
+
+module.exports = LikeRepositoryPostgres;
