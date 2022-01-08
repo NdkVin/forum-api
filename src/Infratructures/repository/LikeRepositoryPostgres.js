@@ -1,6 +1,3 @@
-/* eslint-disable no-else-return */
-const InvariantError = require('../../Commons/exceptions/InvariantError');
-
 const LikeRepository = require('../../Domains/likes/LikeRepository');
 
 class LikeRepositoryPostgres extends LikeRepository {
@@ -28,11 +25,7 @@ class LikeRepositoryPostgres extends LikeRepository {
       values: [id, userId, threadId, commentId],
     };
 
-    const result = await this._pool.query(query);
-
-    if (!result.rowCount) {
-      throw new InvariantError('tidak bisa like');
-    }
+    await this._pool.query(query);
 
     return 'like';
   }
@@ -43,11 +36,7 @@ class LikeRepositoryPostgres extends LikeRepository {
       values: [userId, threadId, commentId],
     };
 
-    const result = await this._pool.query(query);
-
-    if (!result.rowCount) {
-      throw new InvariantError('tidak bisa unlike');
-    }
+    await this._pool.query(query);
 
     return 'unlike';
   }
