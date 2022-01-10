@@ -1,7 +1,0 @@
-{
-  "user": "andika",
-  "password": "anjingpalakucing1",
-  "host": "localhost",
-  "port": 5432,
-  "database": "forumapi_test"
-}
